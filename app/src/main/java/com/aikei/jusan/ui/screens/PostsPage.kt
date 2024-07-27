@@ -17,7 +17,7 @@ fun PostsPage(viewModel: PostsViewModel) {
     val posts = viewModel.posts
 
     Scaffold(
-        topBar = { TopAppBar(title = "Posts") }
+
     ) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
             items(posts) { post ->
