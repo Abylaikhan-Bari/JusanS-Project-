@@ -34,4 +34,3 @@ fun PostListItem(post: Post) {
         }
     }
 }
-

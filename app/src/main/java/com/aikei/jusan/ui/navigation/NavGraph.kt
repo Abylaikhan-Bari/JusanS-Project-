@@ -33,7 +33,8 @@ object NavGraph {
 fun NavHostContainer(
     navController: NavHostController,
     startDestination: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigate: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -41,15 +42,19 @@ fun NavHostContainer(
         modifier = modifier
     ) {
         composable(NavGraph.PostsPage.route) {
+            onNavigate(NavGraph.PostsPage.route)
             PostsPage(viewModel = PostsViewModel())
         }
         composable(NavGraph.AlbumsPage.route) {
+            onNavigate(NavGraph.AlbumsPage.route)
             AlbumsPage(viewModel = AlbumsViewModel())
         }
         composable(NavGraph.UsersPage.route) {
+            onNavigate(NavGraph.UsersPage.route)
             UsersPage(viewModel = UsersViewModel())
         }
         composable(NavGraph.CurrentProfilePage.route) {
+            onNavigate(NavGraph.CurrentProfilePage.route)
             CurrentProfilePage(viewModel = CurrentProfileViewModel())
         }
     }
