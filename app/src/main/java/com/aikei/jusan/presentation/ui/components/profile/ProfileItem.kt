@@ -1,6 +1,5 @@
-package com.aikei.jusan.presentation.ui.components
+package com.aikei.jusan.presentation.ui.components.profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -8,7 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import com.aikei.jusan.data.model.User
 //import coil.compose.rememberImagePainter
@@ -16,12 +14,14 @@ import com.aikei.jusan.data.model.User
 @Composable
 fun ProfileItem(user: User, modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(16.dp)) {
+        // User details card
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(4.dp),
             shape = MaterialTheme.shapes.medium
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
+                // Email row
                 Row {
                     Text(
                         text = "Email: ",
@@ -31,10 +31,11 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                     Text(
                         text = user.email,
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        color = Color.Blue
+                        color = Color.Blue,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
                 }
+                // Full Name row
                 Row {
                     Text(
                         text = "Full Name: ",
@@ -48,6 +49,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                         color = Color.Black
                     )
                 }
+                // Phone row
                 Row {
                     Text(
                         text = "Phone: ",
@@ -61,6 +63,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                         color = Color.Red
                     )
                 }
+                // Website row
                 Row {
                     Text(
                         text = "Website: ",
@@ -79,7 +82,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // ToDos Card
+        // My ToDos card
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(4.dp),
@@ -88,8 +91,8 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp), // Set the height to center the text properly
-                contentAlignment = Alignment.Center // Center both horizontally and vertically
+                    .height(70.dp),
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "My ToDos",
@@ -99,14 +102,14 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             }
         }
 
-
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Company")
+        // Company details (if available)
+        if (user.companyName != null || user.businessServices != null) {
+            Text(text = "Company")
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        user.company?.let {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(4.dp),
@@ -114,13 +117,14 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Company name: ",
-                        style = MaterialTheme.typography.titleMedium,
+                        text = "Company name: ${user.companyName}",
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Business services: ${user.businessServices}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
                 }
             }
@@ -128,11 +132,12 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Text(text = "Address")
+        // Address details (if available)
+        if (user.street != null || user.suite != null || user.city != null || user.zipcode != null) {
+            Text(text = "Address")
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        user.address?.let {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(4.dp),
@@ -140,16 +145,40 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Address",
-                        style = MaterialTheme.typography.titleMedium,
+                        text = "Street: ${user.street}",
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Suite: ${user.suite}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
+                    Text(
+                        text = "City: ${user.city}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(
+                        text = "Zipcode: ${user.zipcode}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Show on map",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Blue
+                        )
+                    }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
@@ -166,8 +195,12 @@ fun ProfileItemPreview() {
             phone = "+77777777701",
             website = "www.johndoe.com",
             profilePictureUrl = "https://example.com/user1.jpg",
-            company = "Doe Enterprises",
-            address = "123 Main St, Springfield, USA",
+            companyName = "Doe Enterprises",
+            businessServices = "Tech Solutions",
+            street = "123 Main St",
+            suite = "Suite 101",
+            city = "Springfield",
+            zipcode = "12345",
             todos = listOf("Complete project report", "Buy groceries", "Schedule meeting")
         )
     )

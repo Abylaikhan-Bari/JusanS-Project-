@@ -1,4 +1,4 @@
-package com.aikei.jusan.presentation.ui.components
+package com.aikei.jusan.presentation.ui.components.common
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -6,7 +6,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.RowScope
 import com.aikei.jusan.R
 

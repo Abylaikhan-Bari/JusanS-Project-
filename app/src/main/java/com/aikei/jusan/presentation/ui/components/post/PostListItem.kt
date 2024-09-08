@@ -1,9 +1,8 @@
-package com.aikei.jusan.presentation.ui.components
+package com.aikei.jusan.presentation.ui.components.post
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -15,11 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.aikei.jusan.data.model.Post
 
 @Composable
-fun PostListItem(post: Post) {
+fun PostListItem(post: Post, onClick: (Post) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { onClick(post) },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(

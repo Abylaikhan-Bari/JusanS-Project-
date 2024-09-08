@@ -49,5 +49,9 @@ class PostsViewModel @Inject constructor(
             }
         }
     }
+
+    fun getPostById(postId: String?): Post? {
+        return _uiState.value.posts.find { it.id == postId }
+    }
 }
 
