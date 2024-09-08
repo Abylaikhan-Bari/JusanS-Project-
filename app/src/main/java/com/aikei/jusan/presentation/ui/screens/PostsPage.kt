@@ -14,13 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.aikei.jusan.presentation.ui.components.PostListItem
 import com.aikei.jusan.presentation.ui.components.TopAppBar
 import com.aikei.jusan.domain.viewmodel.PostsViewModel
 import com.aikei.jusan.data.model.Post
 
 @Composable
-fun PostsPage(viewModel: PostsViewModel) {
+fun PostsPage(viewModel: PostsViewModel = hiltViewModel()) { // Inject PostsViewModel
     val posts = viewModel.posts.value // Access posts.value
 
     Scaffold { paddingValues ->
@@ -37,6 +38,7 @@ fun PostsPage(viewModel: PostsViewModel) {
         }
     }
 }
+
 
 @Composable
 fun LoadingIndicator() {
@@ -57,10 +59,10 @@ fun ErrorMessage(message: String?) {
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PostsPagePreview() {
-    val viewModel = PostsViewModel()
-
-    PostsPage(viewModel = viewModel)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PostsPagePreview() {
+//    val viewModel = PostsViewModel()
+//
+//    PostsPage(viewModel = viewModel)
+//}

@@ -7,10 +7,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aikei.jusan.data.model.Post
-import com.aikei.jusan.data.repository.PostRepository
+import com.aikei.jusan.domain.repository.PostRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PostsViewModel(private val repository: PostRepository = PostRepository()) : ViewModel() {
+@HiltViewModel
+class PostsViewModel @Inject constructor(
+    private val repository: PostRepository
+) : ViewModel() {
 
     private val _posts = mutableStateOf<List<Post>>(emptyList())
     val posts: State<List<Post>> = _posts // Expose as a State
@@ -31,3 +36,4 @@ class PostsViewModel(private val repository: PostRepository = PostRepository()) 
         }
     }
 }
+

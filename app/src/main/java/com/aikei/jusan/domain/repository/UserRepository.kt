@@ -1,4 +1,4 @@
-package com.aikei.jusan.data.repository
+package com.aikei.jusan.domain.repository
 
 import com.aikei.jusan.data.model.User
 

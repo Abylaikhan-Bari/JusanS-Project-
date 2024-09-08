@@ -2,7 +2,7 @@ package com.aikei.jusan.domain.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.aikei.jusan.data.model.User
-import com.aikei.jusan.data.repository.UserRepository
+import com.aikei.jusan.domain.repository.UserRepository
 
 class CurrentProfileViewModel : ViewModel() {
     private val userRepository = UserRepository()

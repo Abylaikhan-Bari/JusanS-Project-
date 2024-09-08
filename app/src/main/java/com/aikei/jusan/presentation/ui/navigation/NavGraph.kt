@@ -13,6 +13,7 @@ import com.aikei.jusan.presentation.ui.screens.AlbumsPage
 import com.aikei.jusan.presentation.ui.screens.CurrentProfilePage
 import com.aikei.jusan.presentation.ui.screens.PostsPage
 import com.aikei.jusan.presentation.ui.screens.UsersPage
+import androidx.hilt.navigation.compose.hiltViewModel
 
 object NavGraph {
     object PostsPage {
@@ -46,19 +47,23 @@ fun NavHostContainer(
     ) {
         composable(NavGraph.PostsPage.route) {
             onNavigate(NavGraph.PostsPage.route)
-            PostsPage(viewModel = PostsViewModel())
+            val postsViewModel: PostsViewModel = hiltViewModel() // Use Hilt to inject ViewModel
+            PostsPage(viewModel = postsViewModel)
         }
         composable(NavGraph.AlbumsPage.route) {
             onNavigate(NavGraph.AlbumsPage.route)
-            AlbumsPage(viewModel = AlbumsViewModel())
+            val albumsViewModel: AlbumsViewModel = hiltViewModel() // Use Hilt to inject ViewModel
+            AlbumsPage(viewModel = albumsViewModel)
         }
         composable(NavGraph.UsersPage.route) {
             onNavigate(NavGraph.UsersPage.route)
-            UsersPage(viewModel = UsersViewModel())
+            val usersViewModel: UsersViewModel = hiltViewModel() // Use Hilt to inject ViewModel
+            UsersPage(viewModel = usersViewModel)
         }
         composable(NavGraph.CurrentProfilePage.route) {
             onNavigate(NavGraph.CurrentProfilePage.route)
-            CurrentProfilePage(viewModel = CurrentProfileViewModel())
+            val currentProfileViewModel: CurrentProfileViewModel = hiltViewModel() // Use Hilt to inject ViewModel
+            CurrentProfilePage(viewModel = currentProfileViewModel)
         }
     }
 }
