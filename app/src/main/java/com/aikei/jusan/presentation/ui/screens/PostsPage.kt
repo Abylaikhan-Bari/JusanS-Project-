@@ -1,4 +1,4 @@
-package com.aikei.jusan.ui.screens
+package com.aikei.jusan.presentation.ui.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,9 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.aikei.jusan.ui.components.PostListItem
-import com.aikei.jusan.ui.components.TopAppBar
-import com.aikei.jusan.viewmodel.PostsViewModel
+import com.aikei.jusan.presentation.ui.components.PostListItem
+import com.aikei.jusan.presentation.ui.components.TopAppBar
+import com.aikei.jusan.domain.viewmodel.PostsViewModel
 import com.aikei.jusan.data.model.Post
 
 @Composable

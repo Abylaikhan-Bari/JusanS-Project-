@@ -1,4 +1,4 @@
-package com.aikei.jusan.ui.components
+package com.aikei.jusan.presentation.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

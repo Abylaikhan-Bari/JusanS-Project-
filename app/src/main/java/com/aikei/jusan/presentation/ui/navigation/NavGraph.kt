@@ -1,15 +1,18 @@
-package com.aikei.jusan.ui.navigation
+package com.aikei.jusan.presentation.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.aikei.jusan.ui.screens.*
-import com.aikei.jusan.viewmodel.AlbumsViewModel
-import com.aikei.jusan.viewmodel.CurrentProfileViewModel
-import com.aikei.jusan.viewmodel.PostsViewModel
-import com.aikei.jusan.viewmodel.UsersViewModel
+import com.aikei.jusan.domain.viewmodel.AlbumsViewModel
+import com.aikei.jusan.domain.viewmodel.CurrentProfileViewModel
+import com.aikei.jusan.domain.viewmodel.PostsViewModel
+import com.aikei.jusan.domain.viewmodel.UsersViewModel
+import com.aikei.jusan.presentation.ui.screens.AlbumsPage
+import com.aikei.jusan.presentation.ui.screens.CurrentProfilePage
+import com.aikei.jusan.presentation.ui.screens.PostsPage
+import com.aikei.jusan.presentation.ui.screens.UsersPage
 
 object NavGraph {
     object PostsPage {

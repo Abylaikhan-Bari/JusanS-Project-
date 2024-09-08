@@ -1,4 +1,4 @@
-package com.aikei.jusan.ui.theme
+package com.aikei.jusan.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

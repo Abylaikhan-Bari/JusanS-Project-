@@ -1,18 +1,11 @@
-package com.aikei.jusan
+package com.aikei.jusan.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.aikei.jusan.ui.MainScreen
-import com.aikei.jusan.ui.theme.JusanTheme
+import com.aikei.jusan.presentation.ui.MainScreen
+import com.aikei.jusan.presentation.ui.theme.JusanTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.aikei.jusan.ui.components
+package com.aikei.jusan.presentation.ui.components
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable

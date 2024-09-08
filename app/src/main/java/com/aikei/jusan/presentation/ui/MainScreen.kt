@@ -1,4 +1,4 @@
-package com.aikei.jusan.ui
+package com.aikei.jusan.presentation.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.aikei.jusan.ui.components.BottomNavigation
-import com.aikei.jusan.ui.navigation.NavGraph
-import com.aikei.jusan.ui.navigation.NavHostContainer
-import com.aikei.jusan.viewmodel.MainViewModel
+import com.aikei.jusan.presentation.ui.components.BottomNavigation
+import com.aikei.jusan.presentation.ui.navigation.NavGraph
+import com.aikei.jusan.presentation.ui.navigation.NavHostContainer
+import com.aikei.jusan.domain.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.aikei.jusan.viewmodel
+package com.aikei.jusan.domain.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.aikei.jusan.data.model.User

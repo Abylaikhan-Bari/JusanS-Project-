@@ -1,4 +1,4 @@
-package com.aikei.jusan.ui.components
+package com.aikei.jusan.presentation.ui.components
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.NavigationBarItem
@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavHostController
 import com.aikei.jusan.R
-import com.aikei.jusan.ui.navigation.NavGraph
+import com.aikei.jusan.presentation.ui.navigation.NavGraph
 
 @Composable
 fun BottomNavigation(navController: NavHostController) {

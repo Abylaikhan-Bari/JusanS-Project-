@@ -1,4 +1,4 @@
-package com.aikei.jusan.viewmodel
+package com.aikei.jusan.domain.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,10 +1,10 @@
-package com.aikei.jusan.ui.components
+package com.aikei.jusan.presentation.ui.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.aikei.jusan.ui.navigation.NavGraph
+import com.aikei.jusan.presentation.ui.navigation.NavGraph
 
 @Composable
 fun getCurrentPageTitle(navController: NavHostController): String {

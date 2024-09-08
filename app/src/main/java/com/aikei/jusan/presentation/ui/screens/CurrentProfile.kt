@@ -1,4 +1,4 @@
-package com.aikei.jusan.ui.screens
+package com.aikei.jusan.presentation.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,9 +8,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.aikei.jusan.ui.components.BottomNavigation
-import com.aikei.jusan.ui.components.TopAppBar
-import com.aikei.jusan.viewmodel.CurrentProfileViewModel
+import com.aikei.jusan.presentation.ui.components.BottomNavigation
+import com.aikei.jusan.presentation.ui.components.TopAppBar
+import com.aikei.jusan.domain.viewmodel.CurrentProfileViewModel
 
 @Composable
 fun CurrentProfilePage(viewModel: CurrentProfileViewModel) {

@@ -1,4 +1,4 @@
-package com.aikei.jusan.viewmodel
+package com.aikei.jusan.domain.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
