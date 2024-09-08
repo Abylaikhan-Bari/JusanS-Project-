@@ -7,7 +7,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -24,10 +23,9 @@ fun AlbumListItem(album: Album) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
-            // Replace with your actual image loading logic for the album
             Image(
                 painter = painterResource(id = android.R.drawable.ic_menu_gallery), // Placeholder image from Android system
-                contentDescription = "Placeholder Icon",
+                contentDescription = "Album Cover",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -38,8 +36,8 @@ fun AlbumListItem(album: Album) {
                 modifier = Modifier.padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Title", style = MaterialTheme.typography.titleMedium)
-                Text(text = "Username", style = MaterialTheme.typography.bodyMedium)
+                Text(text = album.title, style = MaterialTheme.typography.titleMedium)
+                Text(text = album.username, style = MaterialTheme.typography.bodyMedium)
             }
         }
     }
