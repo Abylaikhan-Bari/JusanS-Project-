@@ -47,22 +47,22 @@ fun NavHostContainer(
     ) {
         composable(NavGraph.PostsPage.route) {
             onNavigate(NavGraph.PostsPage.route)
-            val postsViewModel: PostsViewModel = hiltViewModel() // Use Hilt to inject ViewModel
+            val postsViewModel: PostsViewModel = hiltViewModel()
             PostsPage(viewModel = postsViewModel)
         }
         composable(NavGraph.AlbumsPage.route) {
             onNavigate(NavGraph.AlbumsPage.route)
-            val albumsViewModel: AlbumsViewModel = hiltViewModel() // Use Hilt to inject ViewModel
+            val albumsViewModel: AlbumsViewModel = hiltViewModel()
             AlbumsPage(viewModel = albumsViewModel)
         }
         composable(NavGraph.UsersPage.route) {
             onNavigate(NavGraph.UsersPage.route)
-            val usersViewModel: UsersViewModel = hiltViewModel() // Use Hilt to inject ViewModel
+            val usersViewModel: UsersViewModel = hiltViewModel()
             UsersPage(viewModel = usersViewModel)
         }
         composable(NavGraph.CurrentProfilePage.route) {
             onNavigate(NavGraph.CurrentProfilePage.route)
-            val currentProfileViewModel: CurrentProfileViewModel = hiltViewModel() // Use Hilt to inject ViewModel
+            val currentProfileViewModel: CurrentProfileViewModel = hiltViewModel()
             CurrentProfilePage(viewModel = currentProfileViewModel)
         }
     }
