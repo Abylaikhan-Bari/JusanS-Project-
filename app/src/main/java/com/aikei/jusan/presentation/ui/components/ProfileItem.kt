@@ -107,7 +107,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Company details (if available)
-        if (user.company != null) {
+        if (user.companyName != null || user.businessServices != null) {
             Text(text = "Company")
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -119,17 +119,12 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Company name: ${user.company}",
+                        text = "Company name: ${user.companyName}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Full name: ",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = "Business services: ",
+                        text = "Business services: ${user.businessServices}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -140,7 +135,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
         }
 
         // Address details (if available)
-        if (user.address != null) {
+        if (user.street != null || user.suite != null || user.city != null || user.zipcode != null) {
             Text(text = "Address")
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -152,23 +147,22 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Street: ${user.address}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    Text(
-                        text = "Suite: ",
+                        text = "Street: ${user.street}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "City: ",
+                        text = "Suite: ${user.suite}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Zipcode: ",
+                        text = "City: ${user.city}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(
+                        text = "Zipcode: ${user.zipcode}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -191,7 +185,6 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun ProfileItemPreview() {
@@ -204,8 +197,12 @@ fun ProfileItemPreview() {
             phone = "+77777777701",
             website = "www.johndoe.com",
             profilePictureUrl = "https://example.com/user1.jpg",
-            company = "Doe Enterprises",
-            address = "123 Main St, Springfield, USA",
+            companyName = "Doe Enterprises",
+            businessServices = "Tech Solutions",
+            street = "123 Main St",
+            suite = "Suite 101",
+            city = "Springfield",
+            zipcode = "12345",
             todos = listOf("Complete project report", "Buy groceries", "Schedule meeting")
         )
     )
