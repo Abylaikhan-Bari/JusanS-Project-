@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -29,15 +30,27 @@ fun AlbumListItem(album: Album) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1f / 1f)
+                    .height(90.dp)
             )
 
             Row(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = album.title, style = MaterialTheme.typography.titleMedium)
-                Text(text = album.username, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = album.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = album.username,
+                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.Red),
+                    modifier = Modifier.weight(1f), // Take up available space
+                    textAlign = androidx.compose.ui.text.style.TextAlign.End
+                )
             }
         }
     }
