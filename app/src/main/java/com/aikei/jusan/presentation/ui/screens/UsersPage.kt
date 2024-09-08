@@ -1,5 +1,6 @@
 package com.aikei.jusan.presentation.ui.screens
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,26 +22,16 @@ import com.aikei.jusan.presentation.ui.components.UserListItem
 fun UsersPage(viewModel: UsersViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Scaffold { paddingValues ->
+    Scaffold { padding ->
         when {
             uiState.isLoading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                )
+                LoadingIndicator(modifier = Modifier.fillMaxSize().padding(0.dp))
             }
             uiState.error != null -> {
-                Text(
-                    text = uiState.error ?: "An error occurred",
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                )
+                ErrorMessage(message = uiState.error, modifier = Modifier.fillMaxSize().padding(0.dp))
             }
             else -> {
-                LazyColumn(contentPadding = paddingValues) {
+                LazyColumn(contentPadding = PaddingValues(0.dp)) {
                     items(uiState.users) { user ->
                         UserListItem(user = user)
                     }
