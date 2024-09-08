@@ -9,29 +9,43 @@ import androidx.lifecycle.viewModelScope
 import com.aikei.jusan.data.model.Post
 import com.aikei.jusan.domain.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+data class PostUiState(
+    val posts: List<Post> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
 
 @HiltViewModel
 class PostsViewModel @Inject constructor(
     private val repository: PostRepository
 ) : ViewModel() {
 
-    private val _posts = mutableStateOf<List<Post>>(emptyList())
-    val posts: State<List<Post>> = _posts // Expose as a State
-
-    var isLoading by mutableStateOf(true)
-    var error by mutableStateOf<String?>(null)
+    private val _uiState = MutableStateFlow(PostUiState(isLoading = true))
+    val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
 
     init {
+        fetchPosts()
+    }
+
+    private fun fetchPosts() {
         viewModelScope.launch {
-            isLoading = true
             try {
-                _posts.value = repository.getPosts() // Update _posts
+                _uiState.value = PostUiState(
+                    posts = repository.getPosts(),
+                    isLoading = false
+                )
             } catch (e: Exception) {
-                error = "Error fetching posts: ${e.message}"
-            } finally {
-                isLoading = false
+                _uiState.value = PostUiState(
+                    posts = emptyList(),
+                    isLoading = false,
+                    error = "Error fetching posts: ${e.message}"
+                )
             }
         }
     }

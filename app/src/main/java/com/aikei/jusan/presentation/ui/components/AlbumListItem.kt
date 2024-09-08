@@ -25,7 +25,7 @@ fun AlbumListItem(album: Album) {
     ) {
         Column {
             Image(
-                painter = painterResource(id = android.R.drawable.ic_menu_gallery), // Placeholder image from Android system
+                painter = painterResource(id = android.R.drawable.ic_menu_gallery), // Placeholder image
                 contentDescription = "Album Cover",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -48,7 +48,7 @@ fun AlbumListItem(album: Album) {
                 Text(
                     text = album.username,
                     style = MaterialTheme.typography.bodyMedium.copy(color = Color.Red),
-                    modifier = Modifier.weight(1f), // Take up available space
+                    modifier = Modifier.weight(1f),
                     textAlign = androidx.compose.ui.text.style.TextAlign.End
                 )
             }
