@@ -26,10 +26,10 @@ fun PostsPage(viewModel: PostsViewModel = hiltViewModel()) {
     Scaffold { padding ->
         when {
             uiState.isLoading -> {
-                LoadingIndicator(modifier = Modifier.fillMaxSize()) // No padding needed
+                LoadingIndicator(modifier = Modifier.fillMaxSize())
             }
             uiState.error != null -> {
-                ErrorMessage(message = uiState.error, modifier = Modifier.fillMaxSize()) // No padding needed
+                ErrorMessage(message = uiState.error, modifier = Modifier.fillMaxSize())
             }
             else -> {
                 LazyColumn(

@@ -54,4 +54,5 @@ class UserRepository @Inject constructor() {
     fun getCurrentUser(): Flow<User> = flow {
         emit(getUsers().first().first()) // Simulate fetching the first user
     }
+
 }
