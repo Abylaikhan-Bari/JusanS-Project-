@@ -26,11 +26,15 @@ fun PostListItem(post: Post) {
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            Text(text = post.title, style = MaterialTheme.typography.headlineSmall)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = "by ${post.author}", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = post.content, style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = post.title,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Text(
+                text = post.content,
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }
