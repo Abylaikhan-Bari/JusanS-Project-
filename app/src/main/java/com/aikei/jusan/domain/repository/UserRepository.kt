@@ -13,6 +13,22 @@ class UserRepository @Inject constructor() {
             listOf(
                 User(
                     id = "1",
+                    username = "Alex Mason",
+                    fullName = "Alex Graham Mason The Third",
+                    email = "mason@mail.com",
+                    phone = "+77776666747",
+                    website = "www.alexmason.com",
+                    profilePictureUrl = "https://example.com/user1.jpg",
+                    companyName = "Black Ops Enterprises",
+                    businessServices = "Consulting, PMC",
+                    street = "123 Main St",
+                    suite = "Apt 4B",
+                    city = "Langley",
+                    zipcode = "12345",
+                    todos = listOf("Complete project report", "Buy groceries", "Schedule meeting")
+                ),
+                User(
+                    id = "2",
                     username = "johndoe",
                     fullName = "Johny Doe",
                     email = "johndoe@mail.com",
@@ -28,7 +44,7 @@ class UserRepository @Inject constructor() {
                     todos = listOf("Complete project report", "Buy groceries", "Schedule meeting")
                 ),
                 User(
-                    id = "2",
+                    id = "3",
                     username = "janesmith",
                     fullName = "Jane Smith",
                     email = "janesmith@mail.com",
@@ -44,7 +60,7 @@ class UserRepository @Inject constructor() {
                     todos = listOf("Prepare presentation", "Call client", "Finish article")
                 ),
                 User(
-                    id = "3",
+                    id = "4",
                     username = "alicejohnson",
                     fullName = "Alice Johnson",
                     email = "alicejohnson@mail.com",
