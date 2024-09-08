@@ -1,6 +1,7 @@
 package com.aikei.jusan.presentation.ui.screens.posts
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,9 +37,9 @@ fun PostsPage(viewModel: PostsViewModel = hiltViewModel(), navController: NavCon
 
             else -> {
                 LazyColumn(
+                    contentPadding = PaddingValues(0.dp),
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(padding)
                 ) {
                     items(uiState.posts) { post ->
                         PostListItem(
