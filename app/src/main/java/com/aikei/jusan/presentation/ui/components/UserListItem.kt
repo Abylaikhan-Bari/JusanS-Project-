@@ -27,15 +27,6 @@ fun UserListItem(user: User) {
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {
-            // Placeholder for profile picture
-            Image(
-                painter = painterResource(id = android.R.drawable.ic_menu_report_image), // Later replace with actual image loading logic
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .size(64.dp)
-                    .padding(end = 16.dp)
-            )
-
             Column {
                 Text(
                     text = user.username,
@@ -43,12 +34,12 @@ fun UserListItem(user: User) {
                     color = Color.Black
                 )
                 Text(
-                    text = user.fullName,
+                    text = "Full name: ${user.fullName}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray
                 )
                 Text(
-                    text = user.email,
+                    text = "Email: ${user.email}",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
