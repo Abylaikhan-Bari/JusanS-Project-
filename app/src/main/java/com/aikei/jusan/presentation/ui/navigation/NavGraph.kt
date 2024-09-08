@@ -63,7 +63,7 @@ fun NavHostContainer(
         composable(NavGraph.CurrentProfilePage.route) {
             onNavigate(NavGraph.CurrentProfilePage.route)
             val currentProfileViewModel: CurrentProfileViewModel = hiltViewModel()
-            CurrentProfilePage(viewModel = currentProfileViewModel)
+            CurrentProfilePage(viewModel = currentProfileViewModel, navController)
         }
     }
 }

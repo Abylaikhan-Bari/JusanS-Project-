@@ -1,13 +1,12 @@
 package com.aikei.jusan.domain.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.aikei.jusan.data.model.User
 import com.aikei.jusan.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,13 +23,17 @@ class UsersViewModel @Inject constructor(
     }
 
     private fun loadUsers() {
-        // Simulate data loading
-        _uiState.update { it.copy(isLoading = true) }
-        try {
-            val users = userRepository.getUsers()
-            _uiState.update { it.copy(users = users, isLoading = false) }
-        } catch (e: Exception) {
-            _uiState.update { it.copy(isLoading = false, error = e.message) }
+        viewModelScope.launch {
+            userRepository.getUsers()
+                .onStart {
+                    _uiState.value = UiState(isLoading = true)
+                }
+                .catch { e ->
+                    _uiState.value = UiState(isLoading = false, error = e.message)
+                }
+                .collect { users ->
+                    _uiState.value = UiState(users = users, isLoading = false)
+                }
         }
     }
 
