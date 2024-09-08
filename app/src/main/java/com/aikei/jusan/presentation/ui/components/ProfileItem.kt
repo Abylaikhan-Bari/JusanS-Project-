@@ -85,16 +85,20 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             elevation = CardDefaults.cardElevation(4.dp),
             shape = MaterialTheme.shapes.medium
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp), // Set the height to center the text properly
+                contentAlignment = Alignment.Center // Center both horizontally and vertically
+            ) {
                 Text(
                     text = "My ToDos",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier
-                        .padding(bottom = 8.dp)
-                        .align(Alignment.CenterHorizontally)
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = Color.Red
                 )
             }
         }
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -110,7 +114,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Company",
+                        text = "Company name: ",
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
