@@ -33,11 +33,18 @@ fun UserListItem(user: User) {
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.Black
                 )
-                Text(
-                    text = "Full name: ${user.fullName}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray
-                )
+                Row {
+                    Text(
+                        text = "Full name: ",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                    Text(
+                        text = user.fullName,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Black
+                    )
+                }
                 Row {
                     Text(
                         text = "Email: ",
