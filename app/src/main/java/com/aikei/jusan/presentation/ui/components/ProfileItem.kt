@@ -16,12 +16,14 @@ import com.aikei.jusan.data.model.User
 @Composable
 fun ProfileItem(user: User, modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(16.dp)) {
+        // User details card
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(4.dp),
             shape = MaterialTheme.shapes.medium
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
+                // Email row
                 Row {
                     Text(
                         text = "Email: ",
@@ -31,10 +33,11 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                     Text(
                         text = user.email,
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        color = Color.Blue
+                        color = Color.Blue,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
                 }
+                // Full Name row
                 Row {
                     Text(
                         text = "Full Name: ",
@@ -48,6 +51,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                         color = Color.Black
                     )
                 }
+                // Phone row
                 Row {
                     Text(
                         text = "Phone: ",
@@ -61,6 +65,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                         color = Color.Red
                     )
                 }
+                // Website row
                 Row {
                     Text(
                         text = "Website: ",
@@ -79,7 +84,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // ToDos Card
+        // My ToDos card
         Card(
             modifier = Modifier.fillMaxWidth(),
             elevation = CardDefaults.cardElevation(4.dp),
@@ -89,7 +94,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp),
-                contentAlignment = Alignment.Center // Center both horizontally and vertically
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "My ToDos",
@@ -99,14 +104,14 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             }
         }
 
-
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Company")
+        // Company details (if available)
+        if (user.company != null) {
+            Text(text = "Company")
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        user.company?.let {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(4.dp),
@@ -114,7 +119,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Company name: ",
+                        text = "Company name: ${user.company}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -134,11 +139,12 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Text(text = "Address")
+        // Address details (if available)
+        if (user.address != null) {
+            Text(text = "Address")
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        user.address?.let {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(4.dp),
@@ -146,10 +152,11 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Street: ",
+                        text = "Street: ${user.address}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
+
                     Text(
                         text = "Suite: ",
                         style = MaterialTheme.typography.bodyMedium,
@@ -165,11 +172,10 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
-
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        contentAlignment = Alignment.Center // Center both horizontally and vertically
+                        contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = "Show on map",
@@ -179,9 +185,12 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

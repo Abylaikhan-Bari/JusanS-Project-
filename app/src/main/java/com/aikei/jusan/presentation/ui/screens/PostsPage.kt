@@ -28,9 +28,11 @@ fun PostsPage(viewModel: PostsViewModel = hiltViewModel()) {
             uiState.isLoading -> {
                 LoadingIndicator(modifier = Modifier.fillMaxSize())
             }
+
             uiState.error != null -> {
                 ErrorMessage(message = uiState.error, modifier = Modifier.fillMaxSize())
             }
+
             else -> {
                 LazyColumn(
                     modifier = Modifier
@@ -45,7 +47,6 @@ fun PostsPage(viewModel: PostsViewModel = hiltViewModel()) {
         }
     }
 }
-
 
 @Composable
 fun LoadingIndicator(modifier: Modifier = Modifier) {
