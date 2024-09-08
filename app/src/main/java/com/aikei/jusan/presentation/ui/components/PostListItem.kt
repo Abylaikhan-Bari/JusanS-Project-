@@ -28,7 +28,7 @@ fun PostListItem(post: Post) {
         ) {
             Text(
                 text = post.title,
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
             Text(
