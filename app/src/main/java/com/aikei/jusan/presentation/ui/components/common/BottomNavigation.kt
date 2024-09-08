@@ -1,4 +1,4 @@
-package com.aikei.jusan.presentation.ui.components
+package com.aikei.jusan.presentation.ui.components.common
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.NavigationBarItem

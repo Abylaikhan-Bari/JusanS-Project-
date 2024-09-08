@@ -13,10 +13,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.aikei.jusan.presentation.ui.components.BottomNavigation
+import com.aikei.jusan.presentation.ui.components.common.BottomNavigation
 import com.aikei.jusan.presentation.ui.navigation.NavGraph
 import com.aikei.jusan.presentation.ui.navigation.NavHostContainer
 import com.aikei.jusan.domain.viewmodel.MainViewModel

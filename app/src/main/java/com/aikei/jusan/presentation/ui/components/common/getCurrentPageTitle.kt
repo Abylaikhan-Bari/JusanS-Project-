@@ -1,4 +1,4 @@
-package com.aikei.jusan.presentation.ui.components
+package com.aikei.jusan.presentation.ui.components.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

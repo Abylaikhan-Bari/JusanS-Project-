@@ -1,4 +1,4 @@
-package com.aikei.jusan.presentation.ui.screens
+package com.aikei.jusan.presentation.ui.screens.posts
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,11 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.aikei.jusan.presentation.ui.components.PostListItem
+import androidx.navigation.NavController
+import com.aikei.jusan.presentation.ui.components.post.PostListItem
 import com.aikei.jusan.domain.viewmodel.PostsViewModel
 
 @Composable
-fun PostsPage(viewModel: PostsViewModel = hiltViewModel()) {
+fun PostsPage(viewModel: PostsViewModel = hiltViewModel(), navController: NavController) {
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold { padding ->
@@ -37,16 +38,22 @@ fun PostsPage(viewModel: PostsViewModel = hiltViewModel()) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(0.dp)
+                        .padding(padding)
                 ) {
                     items(uiState.posts) { post ->
-                        PostListItem(post)
+                        PostListItem(
+                            post = post,
+                            onClick = { selectedPost ->
+                                navController.navigate("post_details/${selectedPost.id}")
+                            }
+                        )
                     }
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun LoadingIndicator(modifier: Modifier = Modifier) {
