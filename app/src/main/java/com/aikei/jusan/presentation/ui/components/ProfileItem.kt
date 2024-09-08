@@ -88,7 +88,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp), // Set the height to center the text properly
+                    .height(70.dp),
                 contentAlignment = Alignment.Center // Center both horizontally and vertically
             ) {
                 Text(
@@ -115,12 +115,18 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = "Company name: ",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Full name: ",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(
+                        text = "Business services: ",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
                 }
             }
@@ -140,14 +146,37 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Address",
-                        style = MaterialTheme.typography.titleMedium,
+                        text = "Street: ",
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium
+                        text = "Suite: ",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
+                    Text(
+                        text = "City: ",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(
+                        text = "Zipcode: ",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.Center // Center both horizontally and vertically
+                    ) {
+                        Text(
+                            text = "Show on map",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = Color.Blue
+                        )
+                    }
                 }
             }
         }
