@@ -173,7 +173,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                     ) {
                         Text(
                             text = "Show on map",
-                            style = MaterialTheme.typography.headlineMedium,
+                            style = MaterialTheme.typography.titleMedium,
                             color = Color.Blue
                         )
                     }
