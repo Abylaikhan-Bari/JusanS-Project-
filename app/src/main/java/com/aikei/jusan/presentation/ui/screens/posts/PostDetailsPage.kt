@@ -65,13 +65,13 @@ fun PostDetailsPage(postId: String?, viewModel: PostsViewModel = hiltViewModel()
                 )
             }
 
-            // Make post body text even bigger
+            // Make post body text fit the available space
             Text(
                 text = post.body,
-                style = MaterialTheme.typography.headlineLarge, // Increased text size for body
+                style = MaterialTheme.typography.bodyLarge, // Adjust size
                 modifier = Modifier
                     .padding(bottom = 16.dp)
-                    .weight(if (showAllComments) 0.4f else 1f) // Adjust size based on showAllComments
+                    .weight(1f) // Ensures the body fills the space appropriately
             )
 
             Row(
