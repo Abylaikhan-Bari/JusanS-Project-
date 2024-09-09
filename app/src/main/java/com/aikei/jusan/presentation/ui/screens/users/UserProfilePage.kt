@@ -2,9 +2,12 @@ package com.aikei.jusan.presentation.ui.screens.users
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.aikei.jusan.data.model.User
 
@@ -13,8 +16,17 @@ fun UserProfilePage(user: User) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally  // Center-align content
     ) {
+        // Username at the top, centered
+        Text(
+            text = user.username,
+            style = MaterialTheme.typography.headlineLarge,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+        )
+
         // User Info
         Card(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -24,6 +36,7 @@ fun UserProfilePage(user: User) {
                 Text(text = "Website: ${user.website}")
             }
         }
+
         // Company Info
         Card(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -32,6 +45,7 @@ fun UserProfilePage(user: User) {
                 Text(text = "Business Services: ${user.company.bs}")
             }
         }
+
         // Address Info
         Card(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
             Column(modifier = Modifier.padding(16.dp)) {
