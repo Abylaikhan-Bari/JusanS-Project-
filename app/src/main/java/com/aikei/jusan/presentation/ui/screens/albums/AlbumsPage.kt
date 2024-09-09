@@ -57,7 +57,7 @@ fun AlbumsPage(
                             username = username,
                             coverPhoto = coverPhoto,
                             clickAction = {
-                                navController.navigate("${NavGraph.AlbumsPage.route}/${album.id}")
+                                navController.navigate("${NavGraph.AlbumsPage.route}/${album.id}/${album.title}")
                             }
                         )
                     }

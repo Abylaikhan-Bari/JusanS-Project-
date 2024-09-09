@@ -85,13 +85,13 @@ fun NavHostContainer(
             val currentProfileViewModel: CurrentProfileViewModel = hiltViewModel()
             CurrentProfilePage(viewModel = currentProfileViewModel, navController)
         }
-        composable("${NavGraph.AlbumsPage.route}/{albumId}") { backStackEntry ->
-            val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull()
-            if (albumId != null) {
-                val photosViewModel: PhotosViewModel = hiltViewModel()
-                AlbumPhotosPage(albumId = albumId, viewModel = photosViewModel)
-            }
+        composable("${NavGraph.AlbumsPage.route}/{albumId}/{albumTitle}") { backStackEntry ->
+            val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull() ?: return@composable
+            val albumTitle = backStackEntry.arguments?.getString("albumTitle") ?: "Album"
+            val photosViewModel: PhotosViewModel = hiltViewModel()
+            AlbumPhotosPage(albumId = albumId, albumTitle = albumTitle, viewModel = photosViewModel)
         }
+
 
     }
 }

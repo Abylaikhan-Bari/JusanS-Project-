@@ -56,30 +56,52 @@ fun MainContent(
     currentUsername: String,
     onNavigate: (String) -> Unit
 ) {
+    // Check if you're on a post details page
     val isPostDetailsPage by remember {
         navController.currentBackStackEntryFlow.map { backStackEntry ->
             backStackEntry.destination.route?.startsWith(NavGraph.PostDetailsPage.route) == true
         }
     }.collectAsState(initial = false)
 
+    // Check if you're on an album photos page
+    val isAlbumPhotosPage by remember {
+        navController.currentBackStackEntryFlow.map { backStackEntry ->
+            backStackEntry.destination.route?.startsWith("${NavGraph.AlbumsPage.route}/") == true
+        }
+    }.collectAsState(initial = false)
+
+    // Check if you're on a user details page (to be added)
+    val isUserDetailsPage by remember {
+        navController.currentBackStackEntryFlow.map { backStackEntry ->
+            backStackEntry.destination.route?.startsWith(NavGraph.UsersPage.route) == true
+        }
+    }.collectAsState(initial = false)
+
+    // Check if you're on a to-do details page (to be added)
+//    val isToDoDetailsPage by remember {
+//        navController.currentBackStackEntryFlow.map { backStackEntry ->
+//            backStackEntry.destination.route?.startsWith(NavGraph.ToDosPage.route) == true
+//        }
+//    }.collectAsState(initial = false)
+
+    // Hide the top bar if any of the specific pages are active
+    val hideTopBar = isPostDetailsPage || isAlbumPhotosPage || isUserDetailsPage
+
     Scaffold(
         topBar = {
-            if (!isPostDetailsPage) {
+            if (!hideTopBar) {
                 TopAppBar(
                     title = {
                         if (currentPageTitle == currentUsername) {
                             Text(
                                 text = currentUsername,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentSize(),
+                                modifier = Modifier.fillMaxWidth().wrapContentSize(),
                                 style = MaterialTheme.typography.headlineLarge
                             )
                         } else {
                             Text(
                                 text = currentPageTitle,
-                                modifier = Modifier
-                                    .fillMaxWidth(),
+                                modifier = Modifier.fillMaxWidth(),
                                 style = MaterialTheme.typography.titleLarge
                             )
                         }
@@ -99,4 +121,3 @@ fun MainContent(
         )
     }
 }
-

@@ -20,8 +20,9 @@ import com.aikei.jusan.domain.viewmodel.PhotosViewModel
 import com.aikei.jusan.presentation.ui.components.album.PhotoItem
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlbumPhotosPage(albumId: Int, viewModel: PhotosViewModel = hiltViewModel()) {
+fun AlbumPhotosPage(albumId: Int, albumTitle: String, viewModel: PhotosViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     var isGridView by remember { mutableStateOf(false) }
 
@@ -29,24 +30,47 @@ fun AlbumPhotosPage(albumId: Int, viewModel: PhotosViewModel = hiltViewModel()) 
         viewModel.fetchPhotos(albumId)
     }
 
-    Scaffold {
+    Scaffold { paddingValues ->
         if (uiState.isLoading) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 CircularProgressIndicator()
             }
         } else if (uiState.error != null) {
-            Text(text = "Error: ${uiState.error}", modifier = Modifier.padding(16.dp))
+            Text(
+                text = "Error: ${uiState.error}",
+                modifier = Modifier.padding(16.dp)
+            )
         } else {
-            Column {
-                // Toggle Button for switching between Grid and List view
-                IconButton(onClick = { isGridView = !isGridView }) {
-                    Icon(
-                        imageVector = if (isGridView) Icons.Default.List else Icons.Default.MoreVert,
-                        contentDescription = null
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                // Album title at the top
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = albumTitle,
+                        style = MaterialTheme.typography.titleLarge
                     )
+
+                    // Toggle button on the right side
+                    IconButton(onClick = { isGridView = !isGridView }) {
+                        Icon(
+                            imageVector = if (isGridView) Icons.Default.List else Icons.Default.MoreVert,
+                            contentDescription = null
+                        )
+                    }
                 }
 
-                // Switch between grid and list
                 if (isGridView) {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
@@ -58,7 +82,7 @@ fun AlbumPhotosPage(albumId: Int, viewModel: PhotosViewModel = hiltViewModel()) 
                     }
                 } else {
                     LazyColumn(
-                        contentPadding = PaddingValues(8.dp),
+                        contentPadding = PaddingValues(0.dp),  // No padding on content
                         modifier = Modifier.fillMaxSize()
                     ) {
                         items(uiState.photos) { photo ->
