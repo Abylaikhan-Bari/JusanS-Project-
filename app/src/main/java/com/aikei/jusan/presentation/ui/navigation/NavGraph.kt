@@ -14,6 +14,7 @@ import com.aikei.jusan.presentation.ui.screens.profile.CurrentProfilePage
 import com.aikei.jusan.presentation.ui.screens.users.UserProfilePage
 import com.aikei.jusan.presentation.ui.screens.users.UsersPage
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.aikei.jusan.presentation.ui.screens.todos.ToDosPage
 
 object NavGraph {
     object PostsPage {
@@ -34,6 +35,9 @@ object NavGraph {
 
     object CurrentProfilePage {
         const val route = "current_profile_page"
+    }
+    object ToDosPage {
+        const val route = "todos_page"
     }
 }
 
@@ -98,5 +102,13 @@ fun NavHostContainer(
             val photosViewModel: PhotosViewModel = hiltViewModel()
             AlbumPhotosPage(albumId = albumId, albumTitle = albumTitle, viewModel = photosViewModel)
         }
+        composable(NavGraph.ToDosPage.route) {
+            val toDoViewModel: ToDoViewModel = hiltViewModel()
+            ToDosPage(
+                toDoViewModel = toDoViewModel,
+                navController = navController
+            )
+        }
+
     }
 }

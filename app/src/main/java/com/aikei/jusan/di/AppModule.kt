@@ -4,11 +4,13 @@ import com.aikei.jusan.data.api.AlbumApiService
 import com.aikei.jusan.data.api.CommentApiService
 import com.aikei.jusan.data.api.PhotoApiService
 import com.aikei.jusan.data.api.PostApiService
+import com.aikei.jusan.data.api.ToDoApiService
 import com.aikei.jusan.domain.repository.AlbumRepository
 import com.aikei.jusan.domain.repository.CommentRepository
 import com.aikei.jusan.domain.repository.CommentRepositoryImpl
 import com.aikei.jusan.domain.repository.PostRepository
 import com.aikei.jusan.domain.repository.PostRepositoryImpl
+import com.aikei.jusan.domain.repository.ToDoRepository
 import com.aikei.jusan.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -71,5 +73,15 @@ object AppModule {
         return CommentRepositoryImpl(apiService)
     }
 
+    @Provides
+    @Singleton
+    fun provideToDoApiService(retrofit: Retrofit): ToDoApiService {
+        return retrofit.create(ToDoApiService::class.java)
+    }
 
+    @Provides
+    @Singleton
+    fun provideToDoRepository(toDoApiService: ToDoApiService): ToDoRepository {
+        return ToDoRepository(toDoApiService)
+    }
 }
