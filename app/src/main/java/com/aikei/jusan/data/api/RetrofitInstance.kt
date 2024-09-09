@@ -21,4 +21,11 @@ object RetrofitInstance {
             .build()
             .create(PostApiService::class.java)
     }
+    val commentApi: CommentApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(CommentApiService::class.java)
+    }
 }

@@ -2,8 +2,10 @@ package com.aikei.jusan.domain.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aikei.jusan.data.model.Comment
 import com.aikei.jusan.data.model.Post
 import com.aikei.jusan.data.model.User
+import com.aikei.jusan.domain.repository.CommentRepository
 import com.aikei.jusan.domain.repository.PostRepository
 import com.aikei.jusan.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PostsViewModel @Inject constructor(
     private val postRepository: PostRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val commentRepository: CommentRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PostUiState())
@@ -41,6 +44,10 @@ class PostsViewModel @Inject constructor(
     fun getUserById(userId: Int): User? {
         val users = _uiState.value.users
         return users.find { it.id == userId }
+    }
+
+    suspend fun getCommentsByPostId(postId: String): List<Comment> {
+        return commentRepository.getCommentsByPostId(postId)
     }
 
     data class PostUiState(

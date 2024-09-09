@@ -1,7 +1,10 @@
 package com.aikei.jusan.di
 
+import com.aikei.jusan.data.api.CommentApiService
 import com.aikei.jusan.data.api.PostApiService
 import com.aikei.jusan.domain.repository.AlbumRepository
+import com.aikei.jusan.domain.repository.CommentRepository
+import com.aikei.jusan.domain.repository.CommentRepositoryImpl
 import com.aikei.jusan.domain.repository.PostRepository
 import com.aikei.jusan.domain.repository.PostRepositoryImpl
 import com.aikei.jusan.domain.repository.UserRepository
@@ -16,15 +19,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-//    @Provides
-//    @Singleton
-//    fun providePostApiService(): PostApiService {
-//        // Provide PostApiService
-//        return Retrofit.Builder()
-//            .baseUrl("https://api.example.com")
-//            .build()
-//            .create(PostApiService::class.java)
-//    }
+    @Provides
+    @Singleton
+    fun provideCommentApiService(): CommentApiService {
+        return Retrofit.Builder()
+            .baseUrl("https://api.example.com") // Use the correct base URL
+            .build()
+            .create(CommentApiService::class.java)
+    }
 
     @Provides
     @Singleton
@@ -36,5 +38,13 @@ object AppModule {
     @Singleton
     fun provideUserRepository(): UserRepository {
         return UserRepository() // Replace with actual implementation
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommentRepository(
+        apiService: CommentApiService
+    ): CommentRepository {
+        return CommentRepositoryImpl(apiService) // Pass the apiService here
     }
 }
