@@ -22,9 +22,12 @@ fun ProfileItem(
     Column(modifier = modifier.padding(16.dp)) {
         // Profile title
         Text(
-            text = "User Name Here",
+            text = user.username,
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentWidth(Alignment.CenterHorizontally)
+                .padding(bottom = 16.dp)
         )
 
         // User details card
