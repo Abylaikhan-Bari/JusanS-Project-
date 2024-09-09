@@ -1,18 +1,37 @@
 package com.aikei.jusan.data.model
 
+// User model
 data class User(
-    val id: String,
+    val id: Int,
+    val name: String,
     val username: String,
-    val fullName: String,
     val email: String,
+    val address: Address,
     val phone: String,
     val website: String,
-    val profilePictureUrl: String,
-    val companyName: String? = null, // Updated to specify company name
-    val businessServices: String? = null, // Additional field for business services
-    val street: String? = null, // Street address
-    val suite: String? = null, // Suite number or apartment
-    val city: String? = null, // City
-    val zipcode: String? = null, // Postal code
-    val todos: List<String> = emptyList() // List of ToDos
+    val company: Company
 )
+
+// Address model
+data class Address(
+    val street: String,
+    val suite: String,
+    val city: String,
+    val zipcode: String,
+    val geo: Geo
+)
+
+// Geo model
+data class Geo(
+    val lat: String,
+    val lng: String
+)
+
+// Company model
+data class Company(
+    val name: String,
+    val catchPhrase: String,
+    val bs: String
+)
+
+

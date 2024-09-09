@@ -1,21 +1,20 @@
 package com.aikei.jusan.presentation.ui.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.aikei.jusan.domain.viewmodel.AlbumsViewModel
-import com.aikei.jusan.domain.viewmodel.CurrentProfileViewModel
-import com.aikei.jusan.domain.viewmodel.PostsViewModel
-import com.aikei.jusan.domain.viewmodel.UsersViewModel
+import com.aikei.jusan.domain.viewmodel.*
+import com.aikei.jusan.presentation.ui.screens.albums.AlbumPhotosPage
 import com.aikei.jusan.presentation.ui.screens.albums.AlbumsPage
-import com.aikei.jusan.presentation.ui.screens.profile.CurrentProfilePage
+import com.aikei.jusan.presentation.ui.screens.posts.PostDetailsPage
 import com.aikei.jusan.presentation.ui.screens.posts.PostsPage
+import com.aikei.jusan.presentation.ui.screens.profile.CurrentProfilePage
+import com.aikei.jusan.presentation.ui.screens.users.UserProfilePage
 import com.aikei.jusan.presentation.ui.screens.users.UsersPage
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.aikei.jusan.presentation.ui.screens.posts.PostDetailsPage
+import com.aikei.jusan.presentation.ui.screens.todos.ToDosPage
 
 object NavGraph {
     object PostsPage {
@@ -36,6 +35,9 @@ object NavGraph {
 
     object CurrentProfilePage {
         const val route = "current_profile_page"
+    }
+    object ToDosPage {
+        const val route = "todos_page"
     }
 }
 
@@ -59,28 +61,54 @@ fun NavHostContainer(
         composable("${NavGraph.PostDetailsPage.route}/{postId}") { backStackEntry ->
             val postId = backStackEntry.arguments?.getString("postId")
             val postsViewModel: PostsViewModel = hiltViewModel()
-            val post = postsViewModel.getPostById(postId) // Ensure this method returns a non-null Post or handle null case
-            if (post != null) {
-                PostDetailsPage(post = post)
-            } else {
-                // Handle the case where post is null
-                Text("Post not found")
-            }
+            PostDetailsPage(postId = postId, viewModel = postsViewModel)
         }
+
         composable(NavGraph.AlbumsPage.route) {
             onNavigate(NavGraph.AlbumsPage.route)
             val albumsViewModel: AlbumsViewModel = hiltViewModel()
-            AlbumsPage(viewModel = albumsViewModel)
+            val photosViewModel: PhotosViewModel = hiltViewModel()
+            AlbumsPage(
+                navController = navController,
+                viewModel = albumsViewModel,
+                photoViewModel = photosViewModel
+            )
         }
+
         composable(NavGraph.UsersPage.route) {
             onNavigate(NavGraph.UsersPage.route)
             val usersViewModel: UsersViewModel = hiltViewModel()
-            UsersPage(viewModel = usersViewModel)
+            UsersPage(navController = navController, viewModel = usersViewModel)
         }
+
+        composable("${NavGraph.UsersPage.route}/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull()
+            val usersViewModel: UsersViewModel = hiltViewModel()
+            val selectedUser = usersViewModel.uiState.value.users.find { it.id == userId }
+            selectedUser?.let {
+                UserProfilePage(user = it)
+            }
+        }
+
         composable(NavGraph.CurrentProfilePage.route) {
             onNavigate(NavGraph.CurrentProfilePage.route)
             val currentProfileViewModel: CurrentProfileViewModel = hiltViewModel()
             CurrentProfilePage(viewModel = currentProfileViewModel, navController)
         }
+
+        composable("${NavGraph.AlbumsPage.route}/{albumId}/{albumTitle}") { backStackEntry ->
+            val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull() ?: return@composable
+            val albumTitle = backStackEntry.arguments?.getString("albumTitle") ?: "Album"
+            val photosViewModel: PhotosViewModel = hiltViewModel()
+            AlbumPhotosPage(albumId = albumId, albumTitle = albumTitle, viewModel = photosViewModel)
+        }
+        composable(NavGraph.ToDosPage.route) {
+            val toDoViewModel: ToDoViewModel = hiltViewModel()
+            ToDosPage(
+                toDoViewModel = toDoViewModel,
+                navController = navController
+            )
+        }
+
     }
 }

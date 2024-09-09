@@ -1,6 +1,7 @@
 package com.aikei.jusan.presentation.ui.components.album
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -10,28 +11,38 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.aikei.jusan.data.model.Album
+import com.aikei.jusan.data.model.Photo
 
 @Composable
-fun AlbumListItem(album: Album) {
+fun AlbumListItem(
+    album: Album,
+    username: String,
+    coverPhoto: Photo?,
+    clickAction: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable(onClick = clickAction),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
+            // Album cover image using Coil's rememberImagePainter
             Image(
-                painter = painterResource(id = android.R.drawable.ic_menu_gallery), // Placeholder image
+                painter = rememberImagePainter(data = coverPhoto?.thumbnailUrl ?: "https://via.placeholder.com/150"),
                 contentDescription = "Album Cover",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(90.dp)
+                    .height(150.dp)
             )
 
+            // Title and username row
             Row(
                 modifier = Modifier
                     .padding(8.dp)
@@ -45,10 +56,10 @@ fun AlbumListItem(album: Album) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = album.username,
+                    text = username,
                     style = MaterialTheme.typography.bodyMedium.copy(color = Color.Red),
                     modifier = Modifier.weight(1f),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.End
+                    textAlign = TextAlign.End
                 )
             }
         }

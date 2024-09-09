@@ -1,7 +1,8 @@
 package com.aikei.jusan.data.model
 
-data class Album(
+data class Todo(
     val userId: Int,
     val id: Int,
-    val title: String
+    val title: String,
+    val completed: Boolean
 )

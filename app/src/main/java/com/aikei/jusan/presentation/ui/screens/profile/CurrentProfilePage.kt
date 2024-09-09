@@ -40,7 +40,7 @@ fun CurrentProfilePage(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     item {
-                        ProfileItem(user = uiState.user!!)
+                        ProfileItem(user = uiState.user!!, navController)
                     }
                 }
             }

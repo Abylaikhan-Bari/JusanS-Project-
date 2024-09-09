@@ -1,19 +1,35 @@
 package com.aikei.jusan.presentation.ui.components.profile
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
-import com.aikei.jusan.data.model.User
-//import coil.compose.rememberImagePainter
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.aikei.jusan.data.model.*
 
 @Composable
-fun ProfileItem(user: User, modifier: Modifier = Modifier) {
+fun ProfileItem(
+    user: User,
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier.padding(16.dp)) {
+        // Profile title
+        Text(
+            text = user.username,
+            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentWidth(Alignment.CenterHorizontally)
+                .padding(bottom = 16.dp)
+        )
+
         // User details card
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -21,62 +37,10 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             shape = MaterialTheme.shapes.medium
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                // Email row
-                Row {
-                    Text(
-                        text = "Email: ",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = user.email,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Blue,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                }
-                // Full Name row
-                Row {
-                    Text(
-                        text = "Full Name: ",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = user.fullName,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        color = Color.Black
-                    )
-                }
-                // Phone row
-                Row {
-                    Text(
-                        text = "Phone: ",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = user.phone,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        color = Color.Red
-                    )
-                }
-                // Website row
-                Row {
-                    Text(
-                        text = "Website: ",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = user.website,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        color = Color.Blue
-                    )
-                }
+                UserInfoRow("Email:", user.email, Color.Blue)
+                UserInfoRow("Full Name:", user.name, Color.Black)
+                UserInfoRow("Phone:", user.phone, Color.Red)
+                UserInfoRow("Website:", user.website, Color.Blue)
             }
         }
 
@@ -84,124 +48,88 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
 
         // My ToDos card
         Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(4.dp),
-            shape = MaterialTheme.shapes.medium
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    navController.navigate("todos_page")
+                }
+                .padding(8.dp),
+            elevation = CardDefaults.cardElevation(4.dp)
         ) {
             Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(70.dp),
-                contentAlignment = Alignment.Center
+                    .height(50.dp)
             ) {
                 Text(
                     text = "My ToDos",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = Color.Red
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Company details (if available)
-        if (user.companyName != null || user.businessServices != null) {
-            Text(text = "Company")
+        // Company card
+        CardSection(
+            title = "Company",
+            content = "Company Name: ${user.company.name}\nBusiness Services: ${user.company.catchPhrase}"
+        )
 
-            Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(4.dp),
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = "Company name: ${user.companyName}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = "Business services: ${user.businessServices}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        // Address details (if available)
-        if (user.street != null || user.suite != null || user.city != null || user.zipcode != null) {
-            Text(text = "Address")
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(4.dp),
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = "Street: ${user.street}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = "Suite: ${user.suite}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = "City: ${user.city}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = "Zipcode: ${user.zipcode}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Show on map",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Color.Blue
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+        // Address card
+        CardSection(
+            title = "Address",
+            content = "Street: ${user.address.street}\nSuite: ${user.address.suite}\nCity: ${user.address.city}\nZipcode: ${user.address.zipcode}",
+            linkText = "Show On Map"
+        )
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun ProfileItemPreview() {
-    ProfileItem(
-        user = User(
-            id = "1",
-            username = "johndoe",
-            fullName = "Johny Doe",
-            email = "johndoe@mail.com",
-            phone = "+77777777701",
-            website = "www.johndoe.com",
-            profilePictureUrl = "https://example.com/user1.jpg",
-            companyName = "Doe Enterprises",
-            businessServices = "Tech Solutions",
-            street = "123 Main St",
-            suite = "Suite 101",
-            city = "Springfield",
-            zipcode = "12345",
-            todos = listOf("Complete project report", "Buy groceries", "Schedule meeting")
-        )
+fun UserInfoRow(label: String, value: String, textColor: Color) {
+    Row(
+        modifier = Modifier.padding(bottom = 8.dp)
+    ) {
+        Text(text = "$label ", style = MaterialTheme.typography.bodyMedium)
+        Text(text = value, style = MaterialTheme.typography.bodyMedium.copy(color = textColor))
+    }
+}
+
+@Composable
+fun CardSection(title: String, content: String, linkText: String? = null) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
     )
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(4.dp),
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = content, style = MaterialTheme.typography.bodyMedium)
+
+            if (linkText != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = linkText,
+                        style = MaterialTheme.typography.titleMedium.copy(color = Color.Blue)
+                    )
+                }
+            }
+        }
+    }
 }

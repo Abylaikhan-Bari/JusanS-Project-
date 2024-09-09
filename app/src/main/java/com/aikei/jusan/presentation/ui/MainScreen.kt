@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -19,6 +20,7 @@ import com.aikei.jusan.presentation.ui.components.common.BottomNavigation
 import com.aikei.jusan.presentation.ui.navigation.NavGraph
 import com.aikei.jusan.presentation.ui.navigation.NavHostContainer
 import com.aikei.jusan.domain.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +40,7 @@ fun MainScreen() {
                     NavGraph.PostsPage.route -> "Posts"
                     NavGraph.AlbumsPage.route -> "Albums"
                     NavGraph.UsersPage.route -> "Users"
-                    NavGraph.CurrentProfilePage.route -> currentUsername // Use username for Profile
+                    NavGraph.CurrentProfilePage.route -> currentUsername
                     else -> "App"
                 }
             )
@@ -54,29 +56,50 @@ fun MainContent(
     currentUsername: String,
     onNavigate: (String) -> Unit
 ) {
+    // Check if you're on a post details page
+    val isPostDetailsPage by remember {
+        navController.currentBackStackEntryFlow.map { backStackEntry ->
+            backStackEntry.destination.route?.startsWith(NavGraph.PostDetailsPage.route) == true
+        }
+    }.collectAsState(initial = false)
+
+    // Check if you're on an album photos page
+    val isAlbumPhotosPage by remember {
+        navController.currentBackStackEntryFlow.map { backStackEntry ->
+            backStackEntry.destination.route?.startsWith("${NavGraph.AlbumsPage.route}/") == true
+        }
+    }.collectAsState(initial = false)
+
+    // Check if you're on a user profile page
+    val isUserProfilePage by remember {
+        navController.currentBackStackEntryFlow.map { backStackEntry ->
+            backStackEntry.destination.route?.startsWith(NavGraph.CurrentProfilePage.route) == true
+        }
+    }.collectAsState(initial = false)
+
+    // Check if you're on the ToDos page
+    val isToDosPage by remember {
+        navController.currentBackStackEntryFlow.map { backStackEntry ->
+            backStackEntry.destination.route?.startsWith(NavGraph.ToDosPage.route) == true
+        }
+    }.collectAsState(initial = false)
+
+    // Hide the top bar for user profile, ToDos, post details, and album photos pages
+    val hideTopBar = isPostDetailsPage || isAlbumPhotosPage || isUserProfilePage || isToDosPage
+
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    // If on Profile page, show the username centered, else show the page title
-                    if (currentPageTitle == currentUsername) {
-                        Text(
-                            text = currentUsername,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentSize(),  // Centers text on Profile page
-                            style = MaterialTheme.typography.headlineLarge
-                        )
-                    } else {
+            if (!hideTopBar) {
+                TopAppBar(
+                    title = {
                         Text(
                             text = currentPageTitle,
-                            modifier = Modifier
-                                .fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth(),
                             style = MaterialTheme.typography.titleLarge
                         )
                     }
-                }
-            )
+                )
+            }
         },
         bottomBar = {
             BottomNavigation(navController = navController)

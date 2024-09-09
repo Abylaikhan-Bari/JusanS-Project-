@@ -1,19 +1,18 @@
 package com.aikei.jusan.domain.repository
 
+import com.aikei.jusan.data.api.PostApiService
 import com.aikei.jusan.data.model.Post
+import javax.inject.Inject
 
-class PostRepository {
-    fun getPosts(): List<Post> {
-        // Simulating data fetching, will replace with actual data source logic
-        return listOf(
-            Post("1", "Post Title 1", "Post Content 1", "Author 1", 1624032000),
-            Post("1", "Post Title 1", "Post Content 1", "Author 1", 1624032000),
-            Post("1", "Post Title 1", "Post Content 1", "Author 1", 1624032000),
-            Post("1", "Post Title 1", "Post Content 1", "Author 1", 1624032000),
-            Post("1", "Post Title 1", "Post Content 1", "Author 1", 1624032000),
-            Post("1", "Post Title 1", "Post Content 1", "Author 1", 1624032000),
-            Post("1", "Post Title 1", "Post Content 1", "Author 1", 1624032000),
-            Post("2", "Post Title 2", "Post Content 2", "Author 2", 1624035600)
-        )
+interface PostRepository {
+    suspend fun getPosts(): List<Post>
+}
+
+class PostRepositoryImpl @Inject constructor(
+    private val apiService: PostApiService
+) : PostRepository {
+    override suspend fun getPosts(): List<Post> {
+        return apiService.getPosts()
     }
 }
+

@@ -1,5 +1,6 @@
 package com.aikei.jusan.presentation.ui.components.user
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -12,11 +13,12 @@ import androidx.compose.ui.unit.dp
 import com.aikei.jusan.data.model.User
 
 @Composable
-fun UserListItem(user: User) {
+fun UserListItem(user: User, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { onClick() },  // Make the card clickable
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
@@ -37,7 +39,7 @@ fun UserListItem(user: User) {
                         color = Color.Gray
                     )
                     Text(
-                        text = user.fullName,
+                        text = user.name,
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Black
                     )
