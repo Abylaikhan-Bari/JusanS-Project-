@@ -11,11 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.aikei.jusan.data.model.Album
 
 @Composable
-fun AlbumListItem(album: Album) {
+fun AlbumListItem(album: Album, username: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -23,15 +24,17 @@ fun AlbumListItem(album: Album) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
+            // Album cover image (replace with real image loader)
             Image(
-                painter = painterResource(id = android.R.drawable.ic_menu_gallery), // Placeholder image
+                painter = painterResource(id = android.R.drawable.ic_menu_gallery), // Placeholder
                 contentDescription = "Album Cover",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(90.dp)
+                    .height(150.dp)
             )
 
+            // Title and username row
             Row(
                 modifier = Modifier
                     .padding(8.dp)
@@ -45,10 +48,10 @@ fun AlbumListItem(album: Album) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = album.username,
+                    text = username,
                     style = MaterialTheme.typography.bodyMedium.copy(color = Color.Red),
                     modifier = Modifier.weight(1f),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.End
+                    textAlign = TextAlign.End
                 )
             }
         }

@@ -1,5 +1,6 @@
 package com.aikei.jusan.di
 
+import com.aikei.jusan.data.api.AlbumApiService
 import com.aikei.jusan.data.api.CommentApiService
 import com.aikei.jusan.data.api.PostApiService
 import com.aikei.jusan.domain.repository.AlbumRepository
@@ -40,11 +41,15 @@ object AppModule {
     fun providePostApiService(retrofit: Retrofit): PostApiService {
         return retrofit.create(PostApiService::class.java)
     }
-
     @Provides
     @Singleton
-    fun provideAlbumRepository(): AlbumRepository {
-        return AlbumRepository() // Replace with actual implementation
+    fun provideAlbumApiService(retrofit: Retrofit): AlbumApiService {
+        return retrofit.create(AlbumApiService::class.java)
+    }
+    @Provides
+    @Singleton
+    fun provideAlbumRepository(apiService: AlbumApiService): AlbumRepository {
+        return AlbumRepository(apiService)
     }
 
     @Provides

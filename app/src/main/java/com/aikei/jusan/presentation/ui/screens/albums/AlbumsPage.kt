@@ -35,10 +35,12 @@ fun AlbumsPage(viewModel: AlbumsViewModel = hiltViewModel()) {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(uiState.albums) { album ->
-                        AlbumListItem(album = album)
+                        val username = viewModel.getUserById(album.userId)?.name ?: "Unknown User"
+                        AlbumListItem(album = album, username = username) // Pass the username
                     }
                 }
             }
         }
     }
 }
+
