@@ -12,13 +12,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.aikei.jusan.domain.viewmodel.UsersViewModel
 import com.aikei.jusan.presentation.ui.components.user.UserListItem
+import com.aikei.jusan.presentation.ui.navigation.NavGraph
 import com.aikei.jusan.presentation.ui.screens.posts.ErrorMessage
 import com.aikei.jusan.presentation.ui.screens.posts.LoadingIndicator
 
 @Composable
-fun UsersPage(viewModel: UsersViewModel = hiltViewModel()) {
+fun UsersPage(
+    navController: NavHostController,
+    viewModel: UsersViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold { padding ->
@@ -32,7 +37,10 @@ fun UsersPage(viewModel: UsersViewModel = hiltViewModel()) {
             else -> {
                 LazyColumn(contentPadding = PaddingValues(0.dp)) {
                     items(uiState.users) { user ->
-                        UserListItem(user = user)
+                        UserListItem(user = user) {
+                            // Navigate to user profile when clicked
+                            navController.navigate("${NavGraph.UsersPage.route}/${user.id}")
+                        }
                     }
                 }
             }
