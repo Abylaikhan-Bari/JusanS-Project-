@@ -32,7 +32,7 @@ fun PostListItem(post: Post, onClick: (Post) -> Unit) {
                 modifier = Modifier.padding(bottom = 4.dp)
             )
             Text(
-                text = post.content,
+                text = post.body,
                 style = MaterialTheme.typography.bodyLarge
             )
         }

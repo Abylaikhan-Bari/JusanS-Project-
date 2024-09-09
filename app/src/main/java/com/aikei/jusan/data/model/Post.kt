@@ -1,9 +1,9 @@
 package com.aikei.jusan.data.model
 
 data class Post(
-    val id: String,
+    val id: Int,
     val title: String,
-    val content: String,
-    val author: String,
-    val timestamp: Long
+    val body: String,
+    val authorName: String
 )
+

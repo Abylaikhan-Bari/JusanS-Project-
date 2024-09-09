@@ -23,18 +23,17 @@ fun PostDetailsPage(post: Post) {
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Text(
-            text = "Author: ${post.author}",
+            text = "Author: ${post.authorName}",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Text(
-            text = post.content,
+            text = post.body,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // Placeholder for comments section
-        // Implement this later based on your requirements
         Text(text = "Comments section", style = MaterialTheme.typography.bodyLarge)
     }
 }
+

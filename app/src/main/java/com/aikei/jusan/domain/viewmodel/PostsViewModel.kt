@@ -1,9 +1,5 @@
 package com.aikei.jusan.domain.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aikei.jusan.data.model.Post
@@ -11,7 +7,6 @@ import com.aikei.jusan.domain.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +22,7 @@ class PostsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PostUiState(isLoading = true))
-    val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<PostUiState> = _uiState
 
     init {
         fetchPosts()
@@ -36,13 +31,10 @@ class PostsViewModel @Inject constructor(
     private fun fetchPosts() {
         viewModelScope.launch {
             try {
-                _uiState.value = PostUiState(
-                    posts = repository.getPosts(),
-                    isLoading = false
-                )
+                val posts = repository.getPosts()
+                _uiState.value = PostUiState(posts = posts, isLoading = false)
             } catch (e: Exception) {
                 _uiState.value = PostUiState(
-                    posts = emptyList(),
                     isLoading = false,
                     error = "Error fetching posts: ${e.message}"
                 )
@@ -51,7 +43,8 @@ class PostsViewModel @Inject constructor(
     }
 
     fun getPostById(postId: String?): Post? {
-        return _uiState.value.posts.find { it.id == postId }
+        val postIdInt = postId?.toIntOrNull()
+        return _uiState.value.posts.find { it.id == postIdInt }
     }
-}
 
+}
