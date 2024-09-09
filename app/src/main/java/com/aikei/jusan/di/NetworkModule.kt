@@ -1,9 +1,6 @@
 package com.aikei.jusan.di
 
 import com.aikei.jusan.data.api.PostApiService
-import com.aikei.jusan.domain.repository.PostRepository
-import com.aikei.jusan.domain.repository.PostRepositoryImpl
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

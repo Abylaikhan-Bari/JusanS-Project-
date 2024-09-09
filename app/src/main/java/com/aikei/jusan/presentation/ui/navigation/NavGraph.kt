@@ -59,11 +59,10 @@ fun NavHostContainer(
         composable("${NavGraph.PostDetailsPage.route}/{postId}") { backStackEntry ->
             val postId = backStackEntry.arguments?.getString("postId")
             val postsViewModel: PostsViewModel = hiltViewModel()
-            val post = postsViewModel.getPostById(postId) // Ensure this method returns a non-null Post or handle null case
+            val post = postsViewModel.getPostById(postId)
             if (post != null) {
                 PostDetailsPage(post = post)
             } else {
-                // Handle the case where post is null
                 Text("Post not found")
             }
         }
