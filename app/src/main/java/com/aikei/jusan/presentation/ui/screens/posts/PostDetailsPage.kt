@@ -46,7 +46,11 @@ fun PostDetailsPage(postId: String?, viewModel: PostsViewModel = hiltViewModel()
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            Text(text = post.title, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(bottom = 8.dp))
+            Text(
+                text = post.title,
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
             Row {
                 Text(
                     text = "By: ",
@@ -61,7 +65,15 @@ fun PostDetailsPage(postId: String?, viewModel: PostsViewModel = hiltViewModel()
                 )
             }
 
-            Text(text = post.body, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(bottom = 16.dp))
+            // Make post body text even bigger
+            Text(
+                text = post.body,
+                style = MaterialTheme.typography.headlineLarge, // Increased text size for body
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .weight(if (showAllComments) 0.4f else 1f) // Adjust size based on showAllComments
+            )
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -72,9 +84,10 @@ fun PostDetailsPage(postId: String?, viewModel: PostsViewModel = hiltViewModel()
                 }
             }
 
-            // Make comments scrollable
+            // Adjust height for comments based on showAllComments
             LazyColumn(
-                modifier = Modifier.fillMaxHeight(),
+                modifier = Modifier
+                    .fillMaxHeight(if (showAllComments) 1f else 0.5f),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(comments) { comment ->
