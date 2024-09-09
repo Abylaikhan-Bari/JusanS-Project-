@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.aikei.jusan.data.model.Comment
 
@@ -19,14 +20,22 @@ fun CommentCard(comment: Comment) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Comment Name: ${comment.name}",
-                style = MaterialTheme.typography.bodyLarge
+                text = comment.name,
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Black
             )
-            Text(
-                text = "Email: ${comment.email}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
-            )
+            Row {
+                Text(
+                    text = "Email: ",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                )
+                Text(
+                    text = comment.email,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Blue
+                )
+            }
             Text(
                 text = comment.body,
                 style = MaterialTheme.typography.bodyMedium

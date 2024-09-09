@@ -2,10 +2,13 @@ package com.aikei.jusan.presentation.ui.screens.posts
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aikei.jusan.data.model.Comment
@@ -44,7 +47,19 @@ fun PostDetailsPage(postId: String?, viewModel: PostsViewModel = hiltViewModel()
                 .padding(16.dp)
         ) {
             Text(text = post.title, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(bottom = 8.dp))
-            Text(text = "By: ${user.name}", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(bottom = 16.dp))
+            Row {
+                Text(
+                    text = "By: ",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                Text(
+                    text = user.name,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    color = Color.Red
+                )
+            }
 
             Text(text = post.body, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(bottom = 16.dp))
             Row(
@@ -57,21 +72,14 @@ fun PostDetailsPage(postId: String?, viewModel: PostsViewModel = hiltViewModel()
                 }
             }
 
-            // Render comments from state
-            if (comments.isNotEmpty()) {
-                Column {
-                    if (showAllComments) {
-                        comments.forEach { comment ->
-                            CommentCard(comment = comment)
-                        }
-                    } else {
-                        comments.take(3).forEach { comment ->
-                            CommentCard(comment = comment)
-                        }
-                    }
+            // Make comments scrollable
+            LazyColumn(
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(comments) { comment ->
+                    CommentCard(comment = comment)
                 }
-            } else {
-                Text(text = "No comments available.", style = MaterialTheme.typography.bodyLarge)
             }
         }
     } else {
