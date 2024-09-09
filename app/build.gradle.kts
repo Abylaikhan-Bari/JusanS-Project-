@@ -79,6 +79,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
+    implementation ("io.coil-kt:coil-compose:1.3.2")
 
 
     implementation ("com.squareup.retrofit2:retrofit:2.6.0")

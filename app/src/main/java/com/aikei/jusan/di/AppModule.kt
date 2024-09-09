@@ -2,6 +2,7 @@ package com.aikei.jusan.di
 
 import com.aikei.jusan.data.api.AlbumApiService
 import com.aikei.jusan.data.api.CommentApiService
+import com.aikei.jusan.data.api.PhotoApiService
 import com.aikei.jusan.data.api.PostApiService
 import com.aikei.jusan.domain.repository.AlbumRepository
 import com.aikei.jusan.domain.repository.CommentRepository
@@ -29,7 +30,11 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
+    @Provides
+    @Singleton
+    fun providePhotoApiService(retrofit: Retrofit): PhotoApiService {
+        return retrofit.create(PhotoApiService::class.java)
+    }
     @Provides
     @Singleton
     fun provideCommentApiService(retrofit: Retrofit): CommentApiService {

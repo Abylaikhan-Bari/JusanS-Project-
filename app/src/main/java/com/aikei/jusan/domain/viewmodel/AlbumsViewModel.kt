@@ -9,6 +9,7 @@ import com.aikei.jusan.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,25 +27,25 @@ class AlbumsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AlbumUiState(isLoading = true))
-    val uiState: StateFlow<AlbumUiState> = _uiState
+    val uiState: StateFlow<AlbumUiState> = _uiState.asStateFlow()
 
     init {
         fetchAlbumsAndUsers()
     }
 
-    private fun fetchAlbumsAndUsers() {
+    fun fetchAlbumsAndUsers() {
         viewModelScope.launch {
             try {
                 val albums = albumRepository.getAlbums()
-                val users = userRepository.getUsers().collect { usersList ->
-                    _uiState.value = AlbumUiState(
+                userRepository.getUsers().collect { usersList ->
+                    _uiState.value = _uiState.value.copy(
                         albums = albums,
                         users = usersList,
                         isLoading = false
                     )
                 }
             } catch (e: Exception) {
-                _uiState.value = AlbumUiState(
+                _uiState.value = _uiState.value.copy(
                     albums = emptyList(),
                     users = emptyList(),
                     isLoading = false,
@@ -54,7 +55,6 @@ class AlbumsViewModel @Inject constructor(
         }
     }
 
-    // Helper function to get username by userId
     fun getUserById(userId: Int): User? {
         return _uiState.value.users.find { it.id == userId }
     }

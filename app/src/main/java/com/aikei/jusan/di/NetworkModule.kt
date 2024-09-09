@@ -13,18 +13,18 @@
 //@InstallIn(SingletonComponent::class)
 //object NetworkModule {
 //
-//    @Provides
-//    @Singleton
-//    fun provideRetrofit(): Retrofit {
-//        return Retrofit.Builder()
-//            .baseUrl("https://jsonplaceholder.typicode.com")
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//    }
-//
-//    @Provides
-//    @Singleton
-//    fun providePostApiService(retrofit: Retrofit): PostApiService {
-//        return retrofit.create(PostApiService::class.java)
-//    }
+////    @Provides
+////    @Singleton
+////    fun provideRetrofit(): Retrofit {
+////        return Retrofit.Builder()
+////            .baseUrl("https://jsonplaceholder.typicode.com")
+////            .addConverterFactory(GsonConverterFactory.create())
+////            .build()
+////    }
+////
+////    @Provides
+////    @Singleton
+////    fun providePostApiService(retrofit: Retrofit): PostApiService {
+////        return retrofit.create(PostApiService::class.java)
+////    }
 //}

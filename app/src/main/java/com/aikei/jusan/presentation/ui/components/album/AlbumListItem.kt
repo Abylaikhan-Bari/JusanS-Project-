@@ -10,13 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.aikei.jusan.data.model.Album
+import com.aikei.jusan.data.model.Photo
 
 @Composable
-fun AlbumListItem(album: Album, username: String) {
+fun AlbumListItem(album: Album, username: String, coverPhoto: Photo?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -24,9 +25,9 @@ fun AlbumListItem(album: Album, username: String) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
-            // Album cover image (replace with real image loader)
+            // Album cover image, using a real image if available, otherwise a placeholder
             Image(
-                painter = painterResource(id = android.R.drawable.ic_menu_gallery), // Placeholder
+                painter = rememberImagePainter(coverPhoto?.thumbnailUrl ?: "https://via.placeholder.com/150"),
                 contentDescription = "Album Cover",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
