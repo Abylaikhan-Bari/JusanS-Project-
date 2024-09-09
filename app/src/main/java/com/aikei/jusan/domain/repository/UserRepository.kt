@@ -1,85 +1,35 @@
 package com.aikei.jusan.domain.repository
 
+import com.aikei.jusan.data.api.RetrofitInstance
+import com.aikei.jusan.data.model.Address
+import com.aikei.jusan.data.model.Company
+import com.aikei.jusan.data.model.Geo
 import com.aikei.jusan.data.model.User
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class UserRepository @Inject constructor() {
 
+    private val userService = RetrofitInstance.user_api
+
     fun getUsers(): Flow<List<User>> = flow {
-        emit(
-            listOf(
-                User(
-                    id = "1",
-                    username = "Alex Mason",
-                    fullName = "Alex Graham Mason The Third",
-                    email = "mason@mail.com",
-                    phone = "+77776666747",
-                    website = "www.alexmason.com",
-                    profilePictureUrl = "https://example.com/user1.jpg",
-                    companyName = "Black Ops Enterprises",
-                    businessServices = "Consulting, PMC",
-                    street = "123 Main St",
-                    suite = "Apt 4B",
-                    city = "Langley",
-                    zipcode = "12345",
-                    todos = listOf("Complete project report", "Buy groceries", "Schedule meeting")
-                ),
-                User(
-                    id = "2",
-                    username = "johndoe",
-                    fullName = "Johny Doe",
-                    email = "johndoe@mail.com",
-                    phone = "+77777777701",
-                    website = "www.johndoe.com",
-                    profilePictureUrl = "https://example.com/user1.jpg",
-                    companyName = "Doe Enterprises",
-                    businessServices = "Consulting, Product Development",
-                    street = "123 Main St",
-                    suite = "Apt 4B",
-                    city = "Springfield",
-                    zipcode = "12345",
-                    todos = listOf("Complete project report", "Buy groceries", "Schedule meeting")
-                ),
-                User(
-                    id = "3",
-                    username = "janesmith",
-                    fullName = "Jane Smith",
-                    email = "janesmith@mail.com",
-                    phone = "+77777777702",
-                    website = "www.janesmith.com",
-                    profilePictureUrl = "https://example.com/user2.jpg",
-                    companyName = "Smith Consulting",
-                    businessServices = "Market Research, Financial Analysis",
-                    street = "456 Elm St",
-                    suite = "Suite 12",
-                    city = "Springfield",
-                    zipcode = "67890",
-                    todos = listOf("Prepare presentation", "Call client", "Finish article")
-                ),
-                User(
-                    id = "4",
-                    username = "alicejohnson",
-                    fullName = "Alice Johnson",
-                    email = "alicejohnson@mail.com",
-                    phone = "+77777777703",
-                    website = "www.alicejohnson.com",
-                    profilePictureUrl = "https://example.com/user3.jpg",
-                    companyName = null, // Optional field
-                    businessServices = null, // Optional field
-                    street = null, // Optional field
-                    suite = null, // Optional field
-                    city = null, // Optional field
-                    zipcode = null, // Optional field
-                    todos = listOf("Submit application", "Update resume", "Attend workshop")
-                )
-            )
-        )
+        try {
+            val users = userService.getUsers()
+            emit(users)
+        } catch (e: Exception) {
+            // Handle exceptions, e.g., network errors
+            emit(emptyList())
+        }
     }
 
     fun getCurrentUser(): Flow<User> = flow {
-        emit(getUsers().first().first()) // Simulate fetching the first user
+        try {
+            val users = userService.getUsers()
+            users.firstOrNull()?.let { emit(it) } // Simulate fetching the first user
+        } catch (e: Exception) {
+            // Handle exceptions, e.g., network errors
+            emit(User(id = -1, name = "Unknown", username = "unknown", email = "unknown", address = Address("", "", "", "", Geo("", "")), phone = "unknown", website = "unknown", company = Company("", "", "")))
+        }
     }
 }

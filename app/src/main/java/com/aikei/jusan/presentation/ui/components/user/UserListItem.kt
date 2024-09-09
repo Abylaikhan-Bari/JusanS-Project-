@@ -37,7 +37,7 @@ fun UserListItem(user: User) {
                         color = Color.Gray
                     )
                     Text(
-                        text = user.fullName,
+                        text = user.name, // Updated to use name
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Black
                     )

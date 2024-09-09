@@ -59,13 +59,9 @@ fun NavHostContainer(
         composable("${NavGraph.PostDetailsPage.route}/{postId}") { backStackEntry ->
             val postId = backStackEntry.arguments?.getString("postId")
             val postsViewModel: PostsViewModel = hiltViewModel()
-            val post = postsViewModel.getPostById(postId)
-            if (post != null) {
-                PostDetailsPage(post = post)
-            } else {
-                Text("Post not found")
-            }
+            PostDetailsPage(postId = postId, viewModel = postsViewModel)
         }
+
         composable(NavGraph.AlbumsPage.route) {
             onNavigate(NavGraph.AlbumsPage.route)
             val albumsViewModel: AlbumsViewModel = hiltViewModel()

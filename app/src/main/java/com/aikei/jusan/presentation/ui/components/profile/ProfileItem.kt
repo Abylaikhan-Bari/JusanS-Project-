@@ -6,10 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.aikei.jusan.data.model.Address
+import com.aikei.jusan.data.model.Company
+import com.aikei.jusan.data.model.Geo
 import com.aikei.jusan.data.model.User
-//import coil.compose.rememberImagePainter
 
 @Composable
 fun ProfileItem(user: User, modifier: Modifier = Modifier) {
@@ -43,7 +45,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = user.fullName,
+                        text = user.name, // Updated to use name
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp),
                         color = Color.Black
@@ -105,7 +107,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Company details (if available)
-        if (user.companyName != null || user.businessServices != null) {
+        if (user.company.name.isNotEmpty() || user.company.catchPhrase.isNotEmpty()) {
             Text(text = "Company")
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -117,12 +119,12 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Company name: ${user.companyName}",
+                        text = "Company name: ${user.company.name}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Business services: ${user.businessServices}",
+                        text = "Business services: ${user.company.catchPhrase}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -133,7 +135,7 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
         }
 
         // Address details (if available)
-        if (user.street != null || user.suite != null || user.city != null || user.zipcode != null) {
+        if (user.address.street.isNotEmpty() || user.address.suite.isNotEmpty() || user.address.city.isNotEmpty() || user.address.zipcode.isNotEmpty()) {
             Text(text = "Address")
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -145,22 +147,22 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Street: ${user.street}",
+                        text = "Street: ${user.address.street}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Suite: ${user.suite}",
+                        text = "Suite: ${user.address.suite}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "City: ${user.city}",
+                        text = "City: ${user.address.city}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Zipcode: ${user.zipcode}",
+                        text = "Zipcode: ${user.address.zipcode}",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -188,20 +190,24 @@ fun ProfileItem(user: User, modifier: Modifier = Modifier) {
 fun ProfileItemPreview() {
     ProfileItem(
         user = User(
-            id = "1",
+            id = 1, // Updated to use Int
+            name = "Johny Doe",
             username = "johndoe",
-            fullName = "Johny Doe",
             email = "johndoe@mail.com",
+            address = Address(
+                street = "123 Main St",
+                suite = "Suite 101",
+                city = "Springfield",
+                zipcode = "12345",
+                geo = Geo(lat = "0.0", lng = "0.0")
+            ),
             phone = "+77777777701",
             website = "www.johndoe.com",
-            profilePictureUrl = "https://example.com/user1.jpg",
-            companyName = "Doe Enterprises",
-            businessServices = "Tech Solutions",
-            street = "123 Main St",
-            suite = "Suite 101",
-            city = "Springfield",
-            zipcode = "12345",
-            todos = listOf("Complete project report", "Buy groceries", "Schedule meeting")
+            company = Company(
+                name = "Doe Enterprises",
+                catchPhrase = "Tech Solutions",
+                bs = ""
+            )
         )
     )
 }
