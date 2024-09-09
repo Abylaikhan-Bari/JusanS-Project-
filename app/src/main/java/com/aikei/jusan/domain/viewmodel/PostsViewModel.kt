@@ -12,14 +12,13 @@ import com.aikei.jusan.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class PostUiState(
     val posts: List<Post> = emptyList(),
     val users: List<User> = emptyList(),
-    val comments: List<Comment> = emptyList(), // Added comments state
+    val comments: List<Comment> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -32,7 +31,7 @@ class PostsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PostUiState())
-    val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<PostUiState> = _uiState
 
     init {
         viewModelScope.launch {
@@ -58,14 +57,17 @@ class PostsViewModel @Inject constructor(
 
     fun fetchComments(postId: String) {
         viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true) // Set loading state
             try {
                 val comments = commentRepository.getCommentsByPostId(postId)
                 Log.d("PostsViewModel", "Comments fetched: $comments")
-                _uiState.value = _uiState.value.copy(comments = comments)
+                _uiState.value = _uiState.value.copy(comments = comments, isLoading = false) // Update comments in state
             } catch (e: Exception) {
                 Log.e("PostsViewModel", "Error fetching comments: ${e.message}")
-                _uiState.value = _uiState.value.copy(error = e.message)
+                _uiState.value = _uiState.value.copy(error = e.message, isLoading = false)
             }
         }
     }
+
+
 }

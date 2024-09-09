@@ -13,6 +13,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -21,11 +22,23 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCommentApiService(): CommentApiService {
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.example.com") // Use the correct base URL
+            .baseUrl("https://jsonplaceholder.typicode.com") // Correct base URL
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(CommentApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommentApiService(retrofit: Retrofit): CommentApiService {
+        return retrofit.create(CommentApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePostApiService(retrofit: Retrofit): PostApiService {
+        return retrofit.create(PostApiService::class.java)
     }
 
     @Provides
@@ -45,6 +58,7 @@ object AppModule {
     fun provideCommentRepository(
         apiService: CommentApiService
     ): CommentRepository {
-        return CommentRepositoryImpl(apiService) // Pass the apiService here
+        return CommentRepositoryImpl(apiService)
     }
+
 }

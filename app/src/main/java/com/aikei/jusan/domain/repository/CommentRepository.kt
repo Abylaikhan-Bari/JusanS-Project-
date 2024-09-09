@@ -1,7 +1,7 @@
 package com.aikei.jusan.domain.repository
 
 import com.aikei.jusan.data.api.CommentApiService
-import com.aikei.jusan.data.model.Comment // Import the correct Comment data class
+import com.aikei.jusan.data.model.Comment
 import javax.inject.Inject
 
 interface CommentRepository {
@@ -15,4 +15,3 @@ class CommentRepositoryImpl @Inject constructor(
         return apiService.getCommentsByPostId(postId)
     }
 }
-
