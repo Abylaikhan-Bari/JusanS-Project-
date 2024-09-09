@@ -15,3 +15,4 @@ class PostRepositoryImpl @Inject constructor(
         return apiService.getPosts()
     }
 }
+

@@ -1,5 +1,6 @@
 package com.aikei.jusan.domain.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aikei.jusan.data.model.Comment
@@ -15,6 +16,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class PostUiState(
+    val posts: List<Post> = emptyList(),
+    val users: List<User> = emptyList(),
+    val comments: List<Comment> = emptyList(), // Added comments state
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
 @HiltViewModel
 class PostsViewModel @Inject constructor(
     private val postRepository: PostRepository,
@@ -27,33 +36,36 @@ class PostsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            // Collect posts and users from repositories
-            val posts = postRepository.getPosts()
-            // Collect users from the Flow
-            userRepository.getUsers().collect { users ->
-                _uiState.value = PostUiState(posts = posts, users = users)
+            _uiState.value = PostUiState(isLoading = true)
+            try {
+                val posts = postRepository.getPosts()
+                userRepository.getUsers().collect { users ->
+                    _uiState.value = PostUiState(posts = posts, users = users, isLoading = false)
+                }
+            } catch (e: Exception) {
+                _uiState.value = PostUiState(isLoading = false, error = e.message)
             }
         }
     }
 
     fun getPostById(postId: String?): Post? {
-        val posts = _uiState.value.posts
-        return posts.find { it.id.toString() == postId }
+        return _uiState.value.posts.find { it.id.toString() == postId }
     }
 
     fun getUserById(userId: Int): User? {
-        val users = _uiState.value.users
-        return users.find { it.id == userId }
+        return _uiState.value.users.find { it.id == userId }
     }
 
-    suspend fun getCommentsByPostId(postId: String): List<Comment> {
-        return commentRepository.getCommentsByPostId(postId)
+    fun fetchComments(postId: String) {
+        viewModelScope.launch {
+            try {
+                val comments = commentRepository.getCommentsByPostId(postId)
+                Log.d("PostsViewModel", "Comments fetched: $comments")
+                _uiState.value = _uiState.value.copy(comments = comments)
+            } catch (e: Exception) {
+                Log.e("PostsViewModel", "Error fetching comments: ${e.message}")
+                _uiState.value = _uiState.value.copy(error = e.message)
+            }
+        }
     }
-
-    data class PostUiState(
-        val posts: List<Post> = emptyList(),
-        val users: List<User> = emptyList(),
-        val isLoading: Boolean = false,
-        val error: String? = null
-    )
 }

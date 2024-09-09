@@ -15,24 +15,21 @@ fun CommentCard(comment: Comment) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            .padding(8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = comment.email,
-                style = MaterialTheme.typography.bodyMedium,
+                text = "Comment Name: ${comment.name}",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                text = "Email: ${comment.email}",
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.primary
             )
             Text(
-                text = comment.name,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
                 text = comment.body,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onBackground
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }

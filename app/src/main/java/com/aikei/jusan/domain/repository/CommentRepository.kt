@@ -15,3 +15,4 @@ class CommentRepositoryImpl @Inject constructor(
         return apiService.getCommentsByPostId(postId)
     }
 }
+
