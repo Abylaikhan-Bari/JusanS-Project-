@@ -1,6 +1,7 @@
 package com.aikei.jusan.presentation.ui.components.album
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -17,17 +18,23 @@ import com.aikei.jusan.data.model.Album
 import com.aikei.jusan.data.model.Photo
 
 @Composable
-fun AlbumListItem(album: Album, username: String, coverPhoto: Photo?) {
+fun AlbumListItem(
+    album: Album,
+    username: String,
+    coverPhoto: Photo?,
+    clickAction: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable(onClick = clickAction),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
-            // Album cover image, using a real image if available, otherwise a placeholder
+            // Album cover image using Coil's rememberImagePainter
             Image(
-                painter = rememberImagePainter(coverPhoto?.thumbnailUrl ?: "https://via.placeholder.com/150"),
+                painter = rememberImagePainter(data = coverPhoto?.thumbnailUrl ?: "https://via.placeholder.com/150"),
                 contentDescription = "Album Cover",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

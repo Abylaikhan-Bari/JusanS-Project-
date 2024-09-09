@@ -15,6 +15,8 @@ import com.aikei.jusan.presentation.ui.screens.profile.CurrentProfilePage
 import com.aikei.jusan.presentation.ui.screens.posts.PostsPage
 import com.aikei.jusan.presentation.ui.screens.users.UsersPage
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.aikei.jusan.domain.viewmodel.PhotosViewModel
+import com.aikei.jusan.presentation.ui.screens.albums.AlbumPhotosPage
 import com.aikei.jusan.presentation.ui.screens.posts.PostDetailsPage
 
 object NavGraph {
@@ -65,8 +67,14 @@ fun NavHostContainer(
         composable(NavGraph.AlbumsPage.route) {
             onNavigate(NavGraph.AlbumsPage.route)
             val albumsViewModel: AlbumsViewModel = hiltViewModel()
-            AlbumsPage(viewModel = albumsViewModel)
+            val photosViewModel: PhotosViewModel = hiltViewModel()  // Add the PhotosViewModel
+            AlbumsPage(
+                navController = navController,
+                viewModel = albumsViewModel,
+                photoViewModel = photosViewModel  // Pass PhotosViewModel
+            )
         }
+
         composable(NavGraph.UsersPage.route) {
             onNavigate(NavGraph.UsersPage.route)
             val usersViewModel: UsersViewModel = hiltViewModel()
@@ -77,5 +85,13 @@ fun NavHostContainer(
             val currentProfileViewModel: CurrentProfileViewModel = hiltViewModel()
             CurrentProfilePage(viewModel = currentProfileViewModel, navController)
         }
+        composable("${NavGraph.AlbumsPage.route}/{albumId}") { backStackEntry ->
+            val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull()
+            if (albumId != null) {
+                val photosViewModel: PhotosViewModel = hiltViewModel()
+                AlbumPhotosPage(albumId = albumId, viewModel = photosViewModel)
+            }
+        }
+
     }
 }
