@@ -70,21 +70,15 @@ fun MainContent(
         }
     }.collectAsState(initial = false)
 
-    // Check if you're on a user details page (to be added)
+    // Check if you're on a user profile page, not on the UsersPage
     val isUserDetailsPage by remember {
         navController.currentBackStackEntryFlow.map { backStackEntry ->
-            backStackEntry.destination.route?.startsWith(NavGraph.UsersPage.route) == true
+            val currentRoute = backStackEntry.destination.route
+            currentRoute?.startsWith("${NavGraph.UsersPage.route}/") == true && currentRoute != NavGraph.UsersPage.route
         }
     }.collectAsState(initial = false)
 
-    // Check if you're on a to-do details page (to be added)
-//    val isToDoDetailsPage by remember {
-//        navController.currentBackStackEntryFlow.map { backStackEntry ->
-//            backStackEntry.destination.route?.startsWith(NavGraph.ToDosPage.route) == true
-//        }
-//    }.collectAsState(initial = false)
-
-    // Hide the top bar if any of the specific pages are active
+    // Hide the top bar only for user details, post details, and album photos pages
     val hideTopBar = isPostDetailsPage || isAlbumPhotosPage || isUserDetailsPage
 
     Scaffold(
@@ -95,7 +89,9 @@ fun MainContent(
                         if (currentPageTitle == currentUsername) {
                             Text(
                                 text = currentUsername,
-                                modifier = Modifier.fillMaxWidth().wrapContentSize(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentSize(),
                                 style = MaterialTheme.typography.headlineLarge
                             )
                         } else {
