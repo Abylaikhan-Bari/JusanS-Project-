@@ -93,11 +93,11 @@ fun UserProfilePage(user: User) {
                 Text(text = "City: ${user.address.city}")
                 Text(text = "Zipcode: ${user.address.zipcode}")
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Show On Map",
-                    color = Color.Blue,
-                    modifier = Modifier.clickable { /* Handle map click */ }
-                )
+//                Text(
+//                    text = "Show On Map",
+//                    color = Color.Blue,
+//                    modifier = Modifier.clickable { /* Later will handle map click */ }
+//                )
             }
         }
     }
