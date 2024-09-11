@@ -5,7 +5,10 @@ import com.aikei.jusan.data.api.CommentApiService
 import com.aikei.jusan.data.api.PhotoApiService
 import com.aikei.jusan.data.api.PostApiService
 import com.aikei.jusan.data.api.ToDoApiService
+import com.aikei.jusan.data.firebase.FirebaseAuthService
 import com.aikei.jusan.domain.repository.AlbumRepository
+import com.aikei.jusan.domain.repository.AuthRepository
+import com.aikei.jusan.domain.repository.AuthRepositoryImpl
 import com.aikei.jusan.domain.repository.CommentRepository
 import com.aikei.jusan.domain.repository.CommentRepositoryImpl
 import com.aikei.jusan.domain.repository.PostRepository
@@ -84,4 +87,16 @@ object AppModule {
     fun provideToDoRepository(toDoApiService: ToDoApiService): ToDoRepository {
         return ToDoRepository(toDoApiService)
     }
+    @Provides
+    @Singleton
+    fun provideFirebaseAuthService(): FirebaseAuthService {
+        return FirebaseAuthService()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(authService: FirebaseAuthService): AuthRepository {
+        return AuthRepositoryImpl(authService)
+    }
+
 }

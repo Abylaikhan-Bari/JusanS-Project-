@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.aikei.jusan" />
+                  <option name="mobileSdkAppId" value="1:361028768268:android:fa4479f421a5712c3e5429" />
+                  <option name="projectId" value="jusans-c1b93" />
+                  <option name="projectNumber" value="361028768268" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aikei.jusan.data.model.Todo
 import com.aikei.jusan.data.model.User
+import com.aikei.jusan.domain.repository.AuthRepository
 import com.aikei.jusan.domain.repository.ToDoRepository
 import com.aikei.jusan.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,32 +15,36 @@ import javax.inject.Inject
 @HiltViewModel
 class CurrentProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val todoRepository: ToDoRepository
+    private val todoRepository: ToDoRepository,
+    private val authRepository: AuthRepository // Inject Firebase auth repository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     init {
-        loadCurrentUserAndTodos()
+        loadUserData()
+    }
+
+    private fun loadUserData() {
+        val firebaseUser = authRepository.getCurrentUser()
+        if (firebaseUser != null) {
+            // Check if Firebase user is present and load user profile from API
+            loadCurrentUserAndTodos()
+        }
     }
 
     private fun loadCurrentUserAndTodos() {
         viewModelScope.launch {
             userRepository.getCurrentUser()
-                .onStart {
-                    _uiState.value = UiState(isLoading = true)
-                }
-                .catch { e ->
-                    _uiState.value = UiState(isLoading = false, error = e.message)
-                }
+                .onStart { _uiState.value = UiState(isLoading = true) }
+                .catch { e -> _uiState.value = UiState(isLoading = false, error = e.message) }
                 .collect { user ->
                     _uiState.value = UiState(user = user, isLoading = false)
                     fetchUserTodos(user.id)
                 }
         }
     }
-
     private fun fetchUserTodos(userId: Int) {
         viewModelScope.launch {
             todoRepository.getUserTodos(userId)
