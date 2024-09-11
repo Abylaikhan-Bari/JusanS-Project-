@@ -19,7 +19,9 @@ fun LoginPage(
     var errorMessage by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
         TextField(
@@ -41,7 +43,7 @@ fun LoginPage(
                 viewModel.login(email, password)
                 errorMessage = viewModel.errorMessage
                 if (errorMessage.isEmpty()) {
-                    onLoginSuccess()
+                    onLoginSuccess() // Navigate to the main screen
                 }
             },
             modifier = Modifier.fillMaxWidth()

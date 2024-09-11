@@ -16,13 +16,16 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
 
     var errorMessage by mutableStateOf("")
+    var isLoginSuccessful by mutableStateOf(false)
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
                 authRepository.login(email, password)
+                isLoginSuccessful = true
             } catch (e: Exception) {
                 errorMessage = e.message ?: "Login failed"
+                isLoginSuccessful = false
             }
         }
     }
@@ -31,8 +34,10 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 authRepository.register(email, password)
+                isLoginSuccessful = true
             } catch (e: Exception) {
                 errorMessage = e.message ?: "Registration failed"
+                isLoginSuccessful = false
             }
         }
     }

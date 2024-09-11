@@ -11,24 +11,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.aikei.jusan.domain.viewmodel.AuthViewModel
+import com.aikei.jusan.presentation.ui.screens.auth.LoginPage
+import com.aikei.jusan.presentation.ui.screens.auth.RegisterPage
 
 @Composable
 fun AuthScreen() {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    val authViewModel: AuthViewModel = hiltViewModel()
+    var showLogin by remember { mutableStateOf(true) }
 
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-        TextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
-        TextField(value = password, onValueChange = { password = it }, label = { Text("Password") })
-        Button(onClick = { authViewModel.login(email, password) }) {
-            Text("Login")
-        }
-        Button(onClick = { authViewModel.register(email, password) }) {
-            Text("Register")
-        }
+    // Toggle between Login and Register screen
+    if (showLogin) {
+        LoginPage(onLoginSuccess = {
+            // On successful login, switch to main screen
+            showLogin = false
+        })
+    } else {
+        RegisterPage(onRegisterSuccess = {
+            showLogin = true // After registration, switch to login screen
+        })
     }
 }
