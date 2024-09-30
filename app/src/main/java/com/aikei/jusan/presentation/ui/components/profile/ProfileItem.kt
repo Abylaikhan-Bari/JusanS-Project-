@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.aikei.jusan.data.model.*
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun ProfileItem(
@@ -20,10 +21,11 @@ fun ProfileItem(
     modifier: Modifier = Modifier,
     onSignOut: () -> Unit
 ) {
+    val firebaseUser = FirebaseAuth.getInstance().currentUser
     Column(modifier = modifier.padding(16.dp)) {
         // Profile title
         Text(
-            text = user.username,
+            text = firebaseUser?.displayName ?: "Unknown User",
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier
                 .fillMaxWidth()

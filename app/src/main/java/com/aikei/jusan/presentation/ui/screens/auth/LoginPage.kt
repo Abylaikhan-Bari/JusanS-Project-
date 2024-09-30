@@ -11,7 +11,7 @@ import com.aikei.jusan.domain.viewmodel.AuthViewModel
 
 @Composable
 fun LoginPage(
-    authViewModel: AuthViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel,  // ViewModel to handle authentication
     onLoginSuccess: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
@@ -19,9 +19,7 @@ fun LoginPage(
     var errorMessage by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
         TextField(
@@ -37,13 +35,13 @@ fun LoginPage(
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation()
         )
-        Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
                 authViewModel.login(email, password)
-                errorMessage = authViewModel.errorMessage
-                if (errorMessage.isEmpty()) {
-                    onLoginSuccess() // Navigate to the main screen
+                if (authViewModel.isLoginSuccessful) {
+                    onLoginSuccess() // Navigate to main screen after login
+                } else {
+                    errorMessage = authViewModel.errorMessage // Show error if login fails
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -53,5 +51,7 @@ fun LoginPage(
         if (errorMessage.isNotEmpty()) {
             Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
         }
+
     }
 }
+
