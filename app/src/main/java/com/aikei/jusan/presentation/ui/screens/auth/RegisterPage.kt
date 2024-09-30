@@ -11,7 +11,7 @@ import com.aikei.jusan.domain.viewmodel.AuthViewModel
 
 @Composable
 fun RegisterPage(
-    viewModel: AuthViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
     onRegisterSuccess: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
@@ -40,8 +40,8 @@ fun RegisterPage(
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-                viewModel.register(email, password)
-                errorMessage = viewModel.errorMessage
+                authViewModel.register(email, password)
+                errorMessage = authViewModel.errorMessage
                 if (errorMessage.isEmpty()) {
                     onRegisterSuccess() // Navigate to the login screen after successful registration
                 }

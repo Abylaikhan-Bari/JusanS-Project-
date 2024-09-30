@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(onSignOut: () -> Unit, navController: NavHostController) {
     val navController = rememberNavController()
     val mainViewModel: MainViewModel = hiltViewModel()
     val currentPageTitle by mainViewModel.currentPageTitle.collectAsState()
@@ -44,7 +44,8 @@ fun MainScreen() {
                     else -> "App"
                 }
             )
-        }
+        },
+        onSignOut = onSignOut
     )
 }
 
@@ -54,7 +55,8 @@ fun MainContent(
     navController: NavHostController,
     currentPageTitle: String,
     currentUsername: String,
-    onNavigate: (String) -> Unit
+    onNavigate: (String) -> Unit,
+    onSignOut: () -> Unit
 ) {
     // Check if you're on a post details page
     val isPostDetailsPage by remember {

@@ -11,7 +11,7 @@ import com.aikei.jusan.domain.viewmodel.AuthViewModel
 
 @Composable
 fun LoginPage(
-    viewModel: AuthViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
     onLoginSuccess: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
@@ -40,8 +40,8 @@ fun LoginPage(
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-                viewModel.login(email, password)
-                errorMessage = viewModel.errorMessage
+                authViewModel.login(email, password)
+                errorMessage = authViewModel.errorMessage
                 if (errorMessage.isEmpty()) {
                     onLoginSuccess() // Navigate to the main screen
                 }

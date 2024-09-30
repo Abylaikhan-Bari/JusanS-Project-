@@ -13,8 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.aikei.jusan.domain.viewmodel.AuthViewModel
 import com.aikei.jusan.domain.viewmodel.CurrentProfileViewModel
 import com.aikei.jusan.presentation.ui.components.profile.ProfileItem
+import com.aikei.jusan.presentation.ui.navigation.NavGraph
 import com.aikei.jusan.presentation.ui.screens.posts.ErrorMessage
 import com.aikei.jusan.presentation.ui.screens.posts.LoadingIndicator
 
@@ -22,6 +24,7 @@ import com.aikei.jusan.presentation.ui.screens.posts.LoadingIndicator
 @Composable
 fun CurrentProfilePage(
     viewModel: CurrentProfileViewModel = hiltViewModel(),
+    authviewModel: AuthViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -40,7 +43,12 @@ fun CurrentProfilePage(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     item {
-                        ProfileItem(user = uiState.user!!, navController)
+                        ProfileItem(user = uiState.user!!, navController,onSignOut = {
+                            authviewModel.signOut()
+                            navController.navigate(NavGraph.AuthScreen.route) {
+                                popUpTo(NavGraph.PostsPage.route) { inclusive = true }
+                            }
+                        })
                     }
                 }
             }

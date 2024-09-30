@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.*
+import androidx.navigation.compose.rememberNavController
 import com.aikei.jusan.presentation.ui.AuthScreen
 import com.aikei.jusan.presentation.ui.MainScreen
 import com.aikei.jusan.presentation.ui.screens.auth.PinPage
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JusanTheme {
-                // Call your Composable logic here
+                // Calling Composable logic
                 MainAppContent()
             }
         }
@@ -28,12 +29,18 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainAppContent() {
+    val navController = rememberNavController() // Create a NavController instance
     var isAuthenticated by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser != null) }
     var isPinValidated by remember { mutableStateOf(false) }
 
     if (!isAuthenticated) {
         // Show login/register screen
-        AuthScreen()
+        AuthScreen(
+            onLoginSuccess = {
+                isAuthenticated = true
+            },
+            navController = navController // Pass NavController to AuthScreen
+        )
     } else {
         // Show PIN screen after successful Firebase login
         if (!isPinValidated) {
@@ -44,7 +51,14 @@ fun MainAppContent() {
             }
         } else {
             // Show the main content once the PIN is validated
-            MainScreen()
+            MainScreen(
+                onSignOut = {
+                    FirebaseAuth.getInstance().signOut()
+                    isAuthenticated = false
+                    isPinValidated = false
+                },
+                navController = navController // Pass NavController to MainScreen if needed
+            )
         }
     }
 }

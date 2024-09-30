@@ -41,4 +41,15 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
+
+    fun signOut() {
+        viewModelScope.launch {
+            try {
+                authRepository.logout()  // Call the logout function from the repository
+                isLoginSuccessful = false  // Reset login status after successful sign-out
+            } catch (e: Exception) {
+                errorMessage = e.message ?: "Sign out failed"
+            }
+        }
+    }
 }

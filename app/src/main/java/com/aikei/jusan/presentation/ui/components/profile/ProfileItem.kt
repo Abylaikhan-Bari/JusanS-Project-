@@ -17,7 +17,8 @@ import com.aikei.jusan.data.model.*
 fun ProfileItem(
     user: User,
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSignOut: () -> Unit
 ) {
     Column(modifier = modifier.padding(16.dp)) {
         // Profile title
@@ -88,6 +89,30 @@ fun ProfileItem(
             content = "Street: ${user.address.street}\nSuite: ${user.address.suite}\nCity: ${user.address.city}\nZipcode: ${user.address.zipcode}",
             linkText = "Show On Map"
         )
+        // Sign Out card
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onSignOut)
+                .padding(8.dp),
+            elevation = CardDefaults.cardElevation(4.dp),
+            shape = MaterialTheme.shapes.medium
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = "Sign Out",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
+        }
     }
 }
 
