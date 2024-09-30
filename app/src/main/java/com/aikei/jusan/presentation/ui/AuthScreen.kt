@@ -1,23 +1,15 @@
 package com.aikei.jusan.presentation.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.aikei.jusan.domain.viewmodel.AuthViewModel
-import com.aikei.jusan.presentation.ui.screens.auth.LoginPage
-import com.aikei.jusan.presentation.ui.screens.auth.RegisterPage
+import com.aikei.jusan.presentation.ui.screens.auth.LoginRegisterPage
 
 @Composable
 fun AuthScreen(
@@ -25,33 +17,34 @@ fun AuthScreen(
     authViewModel: AuthViewModel = hiltViewModel(),  // Injecting AuthViewModel using Hilt
     navController: NavHostController
 ) {
-    var showLogin by remember { mutableStateOf(true) }
+    var isLoginPage by remember { mutableStateOf(true) }
 
+    // Define the structure of the AuthScreen with toggling between login and register
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Toggle between Login and Register screen
-        if (showLogin) {
-            LoginPage(
-                authViewModel = authViewModel,
-                onLoginSuccess = {
-                    onLoginSuccess() // Trigger the success callback to navigate to the main screen
-                }
-            )
-            TextButton(onClick = { showLogin = false }) {
-                Text("Don't have an account? Register here")
+        // Use one composable for both login and registration
+        LoginRegisterPage(
+            authViewModel = authViewModel,
+            onLoginSuccess = onLoginSuccess,
+            isLoginPage = isLoginPage,
+            onRegisterSuccess = {
+                isLoginPage = true // Switch to login page after registration success
             }
-        } else {
-            RegisterPage(
-                authViewModel = authViewModel,
-                onRegisterSuccess = {
-                    showLogin = true // After registration, switch to the login screen
-                }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Button to toggle between Login and Register page
+        TextButton(onClick = { isLoginPage = !isLoginPage }) {
+            Text(
+                if (isLoginPage) "Don't have an account? Register here"
+                else "Already have an account? Login here"
             )
-            TextButton(onClick = { showLogin = true }) {
-                Text("Already have an account? Login here")
-            }
         }
     }
 }

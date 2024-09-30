@@ -6,20 +6,23 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.aikei.jusan.domain.viewmodel.AuthViewModel
 
 @Composable
-fun LoginPage(
+fun LoginRegisterPage(
     authViewModel: AuthViewModel,  // ViewModel to handle authentication
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: () -> Unit,    // Callback when login succeeds
+    isLoginPage: Boolean,          // Boolean to toggle between login and register
+    onRegisterSuccess: () -> Unit  // Callback when registration succeeds
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
         TextField(
@@ -28,6 +31,7 @@ fun LoginPage(
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(16.dp))
         TextField(
             value = password,
             onValueChange = { password = it },
@@ -35,23 +39,34 @@ fun LoginPage(
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation()
         )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Dynamic button for Login or Register
         Button(
             onClick = {
-                authViewModel.login(email, password)
-                if (authViewModel.isLoginSuccessful) {
-                    onLoginSuccess() // Navigate to main screen after login
+                if (isLoginPage) {
+                    authViewModel.login(email, password)
+                    if (authViewModel.isLoginSuccessful) {
+                        onLoginSuccess()  // Navigate to main screen after login success
+                    } else {
+                        errorMessage = authViewModel.errorMessage // Show login error
+                    }
                 } else {
-                    errorMessage = authViewModel.errorMessage // Show error if login fails
+                    authViewModel.register(email, password)
+                    if (authViewModel.errorMessage.isEmpty()) {
+                        onRegisterSuccess()  // Switch to login page after successful registration
+                    } else {
+                        errorMessage = authViewModel.errorMessage // Show registration error
+                    }
                 }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Login")
+            Text(if (isLoginPage) "Login" else "Register")
         }
+
         if (errorMessage.isNotEmpty()) {
             Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
         }
-
     }
 }
-

@@ -15,9 +15,11 @@ class MainViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
+    // Mutable internal state for page title
     private val _currentPageTitle = MutableStateFlow("Posts")
     val currentPageTitle: StateFlow<String> = _currentPageTitle.asStateFlow()
 
+    // Mutable internal state for current user
     private val _currentUsername = MutableStateFlow("")
     val currentUsername: StateFlow<String> = _currentUsername.asStateFlow()
 
@@ -25,14 +27,19 @@ class MainViewModel @Inject constructor(
         // Fetch the current user and set the username
         viewModelScope.launch {
             userRepository.getCurrentUser().collect { user ->
-                _currentUsername.value = user.username
+                _currentUsername.value = user.username // Updating username with repository value
             }
         }
     }
 
+    // Function to reset the app state on sign-out
+    fun resetState() {
+        _currentPageTitle.value = "App" // Reset the page title
+        _currentUsername.value = ""     // Reset the username
+    }
+
+    // Function to update the current page title
     fun updateCurrentPageTitle(title: String) {
-        viewModelScope.launch {
-            _currentPageTitle.value = title
-        }
+        _currentPageTitle.value = title // Update page title
     }
 }

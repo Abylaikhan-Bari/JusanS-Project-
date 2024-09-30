@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.*
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.aikei.jusan.presentation.ui.AuthScreen
 import com.aikei.jusan.presentation.ui.MainScreen
@@ -34,9 +35,22 @@ class MainActivity : ComponentActivity() {
 fun MainAppContent() {
     val navController = rememberNavController()
     var isAuthenticated by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser != null) }
-    var isPinSet by remember { mutableStateOf(false) }  // Check if the PIN is set for the user
+    var isPinSet by remember { mutableStateOf(false) }
     var isPinValidated by remember { mutableStateOf(false) }
 
+    // Check authentication status
+    LaunchedEffect(key1 = FirebaseAuth.getInstance().currentUser) {
+        isAuthenticated = FirebaseAuth.getInstance().currentUser != null
+        if (isAuthenticated) {
+            // Check if PIN is already set
+            val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            checkIfPinIsSet(uid) { isSet ->
+                isPinSet = isSet
+            }
+        }
+    }
+
+    // Render content based on authentication and PIN status
     if (!isAuthenticated) {
         // Show login/register screen
         AuthScreen(
@@ -52,40 +66,40 @@ fun MainAppContent() {
         )
     } else {
         if (!isPinSet) {
-            // Show PIN setup page if the PIN is not yet set
+            // Show PIN setup page only once (if no PIN has been set)
             PinSetupPage(onPinSet = { pin ->
-                savePin(pin)  // Save the PIN to Firebase Firestore or local storage
+                savePin(pin)
                 isPinSet = true
             })
         } else {
-            // Show PIN validation page if the PIN is already set
             if (!isPinValidated) {
+                // Prompt to enter PIN if it has been set before
                 PinPage(onPinEnter = { enteredPin ->
                     validatePin(enteredPin) { isValid ->
                         if (isValid) {
                             isPinValidated = true
-                        } else {
-                            // Show error message or reset
-                            println("PIN is incorrect.")
                         }
                     }
                 })
-
             } else {
-                // Show the main content once the PIN is validated
+                // Show main content after PIN is validated
                 MainScreen(
                     onSignOut = {
                         FirebaseAuth.getInstance().signOut()
-                        isAuthenticated = false
-                        isPinValidated = false
-                        isPinSet = false
-                        navController.navigate(NavGraph.AuthScreen.route) {
-                            popUpTo(0)  // Clear backstack
-                        }
+                        handleSignOut(navController)
                     },
                     navController = navController
                 )
             }
+        }
+    }
+}
+
+fun handleSignOut(navController: NavHostController) {
+    // Clear the backstack and navigate to AuthScreen
+    navController.navigate(NavGraph.AuthScreen.route) {
+        popUpTo(NavGraph.AuthScreen.route) {
+            inclusive = true
         }
     }
 }
@@ -108,12 +122,10 @@ fun checkIfPinIsSet(uid: String, callback: (Boolean) -> Unit) {
         }
 }
 
-
 fun savePin(pin: String) {
     val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
     val db = FirebaseFirestore.getInstance()
 
-    // Use set instead of update to create the document if it does not exist
     db.collection("users").document(uid)
         .set(mapOf("pin" to pin))
         .addOnSuccessListener {
@@ -145,4 +157,3 @@ fun validatePin(enteredPin: String, callback: (Boolean) -> Unit) {
             callback(false)
         }
 }
-
