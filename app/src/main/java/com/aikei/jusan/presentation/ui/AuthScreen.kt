@@ -1,5 +1,6 @@
 package com.aikei.jusan.presentation.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,58 +12,55 @@ import androidx.navigation.NavHostController
 import com.aikei.jusan.domain.viewmodel.AuthViewModel
 import com.aikei.jusan.presentation.ui.screens.auth.LoginRegisterPage
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AuthScreen(
-    onLoginSuccess: () -> Unit,  // Regular callback after successful login
-    authViewModel: AuthViewModel = hiltViewModel(),  // Injecting AuthViewModel using Hilt
+    onLoginSuccess: () -> Unit,
+    authViewModel: AuthViewModel = hiltViewModel(),
     navController: NavHostController,
-    snackbarHostState: SnackbarHostState  // SnackbarHostState for showing feedback
+    snackbarHostState: SnackbarHostState
 ) {
     var isLoginPage by remember { mutableStateOf(true) }
-    var showLoginSnackbar by remember { mutableStateOf(false) }
-    var showRegisterSnackbar by remember { mutableStateOf(false) }
 
-    // Trigger showing snackbar after login
-    if (showLoginSnackbar) {
-        LaunchedEffect(Unit) {
-            snackbarHostState.showSnackbar("Login successful!")
-            showLoginSnackbar = false // Reset after showing
+    // Trigger the snackbar when the login or registration result is available
+    val loginMessage by remember { authViewModel::loginMessage }
+    val registerMessage by remember { authViewModel::registerMessage }
+
+    LaunchedEffect(loginMessage) {
+        if (loginMessage.isNotEmpty()) {
+            snackbarHostState.showSnackbar(loginMessage)
+            if (authViewModel.isLoginSuccessful) {
+                onLoginSuccess()
+                authViewModel.resetAuthMessages() // Reset messages after success
+            }
         }
     }
 
-    // Trigger showing snackbar after registration
-    if (showRegisterSnackbar) {
-        LaunchedEffect(Unit) {
-            snackbarHostState.showSnackbar("Registration successful! Please log in.")
-            showRegisterSnackbar = false // Reset after showing
+    LaunchedEffect(registerMessage) {
+        if (registerMessage.isNotEmpty()) {
+            snackbarHostState.showSnackbar(registerMessage)
+            authViewModel.resetAuthMessages() // Reset messages after success/failure
         }
     }
 
-    // Define the structure of the AuthScreen with toggling between login and register
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.SpaceBetween,  // Adjust vertical space
-        horizontalAlignment = Alignment.CenterHorizontally  // Center content horizontally
+    Scaffold(
+        topBar = { /* No AppBar for the AuthScreen */ },
+        bottomBar = { /* No BottomBar for the AuthScreen */ }
     ) {
-        Spacer(modifier = Modifier.weight(1f))
-
-        // Use one composable for both login and registration
-        LoginRegisterPage(
-            authViewModel = authViewModel,
-            onLoginSuccess = {
-                onLoginSuccess()  // Trigger successful login callback
-                showLoginSnackbar = true  // Set flag to show login snackbar
-            },
-            isLoginPage = isLoginPage,
-            onRegisterSuccess = {
-                isLoginPage = true  // Switch to login page after successful registration
-                showRegisterSnackbar = true  // Set flag to show registration snackbar
-            },
-            toggleLoginRegister = { isLoginPage = !isLoginPage }
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LoginRegisterPage(
+                authViewModel = authViewModel,
+                isLoginPage = isLoginPage,
+                onLoginSuccess = { authViewModel.loginMessage = "Login successful!" },  // Handle login
+                onRegisterSuccess = { authViewModel.registerMessage = "Registration successful!" },  // Handle register
+                toggleLoginRegister = { isLoginPage = !isLoginPage }  // Toggle login/register
+            )
+        }
     }
 }

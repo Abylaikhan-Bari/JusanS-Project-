@@ -20,16 +20,20 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
 
     var errorMessage by mutableStateOf("")
+    var loginMessage by mutableStateOf("")
+    var registerMessage by mutableStateOf("")
     var isLoginSuccessful by mutableStateOf(false)
+    var isRegisterSuccessful by mutableStateOf(false)
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
             try {
                 authRepository.login(email, password)
                 isLoginSuccessful = true
+                loginMessage = "Login successful!"
             } catch (e: Exception) {
-                errorMessage = e.message ?: "Login failed"
                 isLoginSuccessful = false
+                loginMessage = e.message ?: "Login failed. Please try again."
             }
         }
     }
@@ -38,14 +42,20 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 authRepository.register(email, password)
-                isLoginSuccessful = true
+                isRegisterSuccessful = true
+                registerMessage = "Registration successful! Please log in."
             } catch (e: Exception) {
-                errorMessage = e.message ?: "Registration failed"
-                isLoginSuccessful = false
+                isRegisterSuccessful = false
+                registerMessage = e.message ?: "Registration failed. Please try again."
             }
         }
     }
-
+    fun resetAuthMessages() {
+        loginMessage = ""
+        registerMessage = ""
+        isLoginSuccessful = false
+        isRegisterSuccessful = false
+    }
     fun signOut(navController: NavHostController) {
         viewModelScope.launch {
             try {
