@@ -44,7 +44,7 @@ fun CurrentProfilePage(
                 ) {
                     item {
                         ProfileItem(user = uiState.user!!, navController,onSignOut = {
-                            authviewModel.signOut()
+                            authviewModel.signOut(navController)
                             navController.navigate(NavGraph.AuthScreen.route) {
                                 popUpTo(0) { inclusive = true }  // Clears the entire backstack
                             }

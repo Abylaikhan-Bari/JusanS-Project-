@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun PinSetupPage(onPinSet: (String) -> Unit) {
+fun PinSetupPage(onPinSet: (String) -> Unit) {  // onPinSet is now a regular function
     var pin by remember { mutableStateOf("") }
 
     Column(
@@ -77,7 +77,7 @@ fun PinSetupPage(onPinSet: (String) -> Unit) {
                                 onClick = {
                                     if (pin.length < 4) pin += number
                                     if (pin.length == 4) {
-                                        onPinSet(pin)
+                                        onPinSet(pin)  // Trigger regular function when PIN is set
                                         pin = "" // Clear after setting
                                     }
                                 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun PinPage(onPinEnter: (String) -> Unit) {
+fun PinPage(onPinEnter: (String) -> Unit) {  // Regular callback
     var pin by remember { mutableStateOf("") }
 
     Column(
@@ -47,7 +47,6 @@ fun PinPage(onPinEnter: (String) -> Unit) {
                     ),
                     modifier = Modifier.padding(8.dp)
                 )
-
             }
         }
 
@@ -96,13 +95,13 @@ fun PinPage(onPinEnter: (String) -> Unit) {
 }
 
 @Composable
-fun KeypadButton(number: String, onClick: () -> Unit) {
+fun KeypadButton(number: String, onClick: () -> Unit) {  // Remove @Composable from onClick
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(64.dp)
             .background(Color.LightGray, shape = MaterialTheme.shapes.small)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick)  // This expects a regular function, not a composable
     ) {
         Text(
             text = number,

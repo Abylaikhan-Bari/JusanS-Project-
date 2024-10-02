@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.map
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(onSignOut: () -> Unit, navController: NavHostController) {
-    val mainViewModel: MainViewModel = hiltViewModel() // Removed the extra navController declaration
+    val mainViewModel: MainViewModel = hiltViewModel()
     val currentPageTitle by mainViewModel.currentPageTitle.collectAsState()
     val currentUsername by mainViewModel.currentUsername.collectAsState()
 
@@ -46,12 +46,11 @@ fun MainScreen(onSignOut: () -> Unit, navController: NavHostController) {
         },
         onSignOut = {
             // Clear user-specific data and reset to initial state before calling onSignOut
-            mainViewModel.resetState() // You can implement this in MainViewModel to reset any app state
+            mainViewModel.resetState()
             onSignOut() // Invoke the passed onSignOut function to trigger Firebase sign-out and navigate
         }
     )
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

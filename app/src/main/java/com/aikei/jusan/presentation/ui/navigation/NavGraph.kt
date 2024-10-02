@@ -1,8 +1,10 @@
 package com.aikei.jusan.presentation.ui.navigation
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -54,6 +56,8 @@ fun NavHostContainer(
     modifier: Modifier = Modifier,
     onNavigate: (String) -> Unit
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -130,7 +134,7 @@ fun NavHostContainer(
         composable(NavGraph.AuthScreen.route) {
             val authViewModel: AuthViewModel = hiltViewModel()
 
-            // Define what happens on successful login (e.g., navigate to the main screen)
+            // Pass the SnackbarHostState to AuthScreen
             AuthScreen(
                 onLoginSuccess = {
                     // Navigate to the main screen after successful login
@@ -139,7 +143,8 @@ fun NavHostContainer(
                     }
                 },
                 authViewModel = authViewModel,  // Pass AuthViewModel
-                navController = navController   // Pass NavController
+                navController = navController,   // Pass NavController
+                snackbarHostState = snackbarHostState // Pass the SnackbarHostState
             )
         }
     }

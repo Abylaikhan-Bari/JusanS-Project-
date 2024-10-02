@@ -12,8 +12,8 @@ import com.aikei.jusan.domain.viewmodel.AuthViewModel
 fun LoginRegisterPage(
     authViewModel: AuthViewModel,  // ViewModel to handle authentication
     isLoginPage: Boolean,          // Boolean to toggle between login and register
-    onLoginSuccess: () -> Unit,    // Callback when login succeeds
-    onRegisterSuccess: () -> Unit, // Callback when registration succeeds
+    onLoginSuccess: () -> Unit,    // Regular callback when login succeeds
+    onRegisterSuccess: () -> Unit, // Regular callback when registration succeeds
     toggleLoginRegister: () -> Unit // Callback to toggle between login and register
 ) {
     var email by remember { mutableStateOf("") }
@@ -42,20 +42,19 @@ fun LoginRegisterPage(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Button changes behavior based on `isLoginPage`
         Button(
             onClick = {
                 if (isLoginPage) {
                     authViewModel.login(email, password)
                     if (authViewModel.isLoginSuccessful) {
-                        onLoginSuccess()  // Navigate after login
+                        onLoginSuccess()  // Trigger login success callback
                     } else {
                         errorMessage = authViewModel.errorMessage
                     }
                 } else {
                     authViewModel.register(email, password)
                     if (authViewModel.isLoginSuccessful) {
-                        onRegisterSuccess()  // Navigate after registration
+                        onRegisterSuccess()  // Trigger registration success callback
                     } else {
                         errorMessage = authViewModel.errorMessage
                     }
@@ -73,7 +72,7 @@ fun LoginRegisterPage(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Toggle button to switch between Login and Register page
-        TextButton(onClick = toggleLoginRegister) {
+        TextButton(onClick = toggleLoginRegister, modifier = Modifier.fillMaxWidth()) {
             Text(
                 if (isLoginPage) "Don't have an account? Register here"
                 else "Already have an account? Login here"

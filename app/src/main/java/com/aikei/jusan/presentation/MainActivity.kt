@@ -1,12 +1,18 @@
 package com.aikei.jusan.presentation
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.aikei.jusan.domain.viewmodel.AuthViewModel
 import com.aikei.jusan.presentation.ui.AuthScreen
 import com.aikei.jusan.presentation.ui.MainScreen
 import com.aikei.jusan.presentation.ui.navigation.NavGraph
@@ -31,118 +37,74 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainAppContent() {
+fun MainAppContent(authViewModel: AuthViewModel = hiltViewModel()) {
     val navController = rememberNavController()
     var isAuthenticated by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser != null) }
     var isPinSet by remember { mutableStateOf(false) }
     var isPinValidated by remember { mutableStateOf(false) }
 
+    // Snackbar state and message
+    val snackbarHostState = remember { SnackbarHostState() }
+    var snackbarMessage by remember { mutableStateOf("") }
+
     // Update authentication status when the user signs in or out
-    LaunchedEffect(key1 = FirebaseAuth.getInstance().currentUser) {
+    LaunchedEffect(FirebaseAuth.getInstance().currentUser) {
         isAuthenticated = FirebaseAuth.getInstance().currentUser != null
         if (isAuthenticated) {
             val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-            checkIfPinIsSet(uid) { isSet -> isPinSet = isSet }
+            authViewModel.checkIfPinIsSet(uid) { isSet -> isPinSet = isSet }
         }
     }
 
-    // Conditional rendering based on authentication and PIN status
-    if (!isAuthenticated) {
-        // Show AuthScreen with no AppBar or BottomNavigation
-        AuthScreen(
-            onLoginSuccess = {
-                isAuthenticated = true
-                // Check if the user has a PIN set in Firestore
-                val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-                checkIfPinIsSet(uid) { isSet -> isPinSet = isSet }
-            },
-            navController = navController
-        )
-    } else {
-        if (!isPinSet) {
-            // Show PIN setup page if the PIN is not yet set
-            PinSetupPage(onPinSet = { pin ->
-                savePin(pin)
-                isPinSet = true
-            })
-        } else if (!isPinValidated) {
-            // Show PIN validation page if the PIN is already set
-            PinPage(onPinEnter = { enteredPin ->
-                validatePin(enteredPin) { isValid ->
-                    if (isValid) isPinValidated = true
-                }
-            })
-        } else {
-            // Show main content (MainScreen) after PIN is validated
-            MainScreen(
-                onSignOut = {
-                    FirebaseAuth.getInstance().signOut()
-                    handleSignOut(navController)
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }  // Use SnackbarHost for feedback
+    ) {
+        LaunchedEffect(snackbarMessage) {
+            if (snackbarMessage.isNotEmpty()) {
+                snackbarHostState.showSnackbar(snackbarMessage)
+                snackbarMessage = ""  // Reset message after showing snackbar
+            }
+        }
+
+        if (!isAuthenticated) {
+            AuthScreen(
+                onLoginSuccess = {
+                    isAuthenticated = true
+                    val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                    authViewModel.checkIfPinIsSet(uid) { isSet -> isPinSet = isSet }
                 },
-                navController = navController
+                navController = navController,
+                snackbarHostState = snackbarHostState
             )
-        }
-    }
-}
-
-fun handleSignOut(navController: NavHostController) {
-    navController.navigate(NavGraph.AuthScreen.route) {
-        popUpTo(0) { inclusive = true }  // Clears the entire backstack
-    }
-}
-
-
-fun checkIfPinIsSet(uid: String, callback: (Boolean) -> Unit) {
-    val db = FirebaseFirestore.getInstance()
-
-    db.collection("users").document(uid).get()
-        .addOnSuccessListener { document ->
-            if (document.exists() && document.getString("pin") != null) {
-                callback(true)  // PIN exists
+        } else {
+            if (!isPinSet) {
+                PinSetupPage(onPinSet = { pin ->
+                    authViewModel.savePin(pin)
+                    isPinSet = true
+                    snackbarMessage = "PIN set successfully!"
+                })
+            } else if (!isPinValidated) {
+                PinPage(onPinEnter = { enteredPin ->
+                    authViewModel.validatePin(enteredPin) { isValid ->
+                        if (isValid) {
+                            isPinValidated = true
+                            snackbarMessage = "PIN validated successfully!"
+                        } else {
+                            snackbarMessage = "Invalid PIN, please try again."
+                        }
+                    }
+                })
             } else {
-                callback(false)  // PIN does not exist
+                MainScreen(
+                    onSignOut = {
+                        authViewModel.signOut(navController)
+                        snackbarMessage = "Signed out successfully."
+                    },
+                    navController = navController
+                )
             }
         }
-        .addOnFailureListener { e ->
-            // Handle error
-            println("Error checking if PIN is set: ${e.message}")
-            callback(false)  // Assume PIN is not set if there's an error
-        }
-}
-
-fun savePin(pin: String) {
-    val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
-    val db = FirebaseFirestore.getInstance()
-
-    db.collection("users").document(uid)
-        .set(mapOf("pin" to pin))
-        .addOnSuccessListener {
-            // PIN saved successfully
-            println("PIN saved successfully.")
-        }
-        .addOnFailureListener { e ->
-            // Handle error in saving PIN
-            println("Error saving PIN: ${e.message}")
-        }
-}
-
-fun validatePin(enteredPin: String, callback: (Boolean) -> Unit) {
-    val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
-    val db = FirebaseFirestore.getInstance()
-
-    db.collection("users").document(uid).get()
-        .addOnSuccessListener { document ->
-            val savedPin = document.getString("pin")
-            if (savedPin == enteredPin) {
-                callback(true)  // PIN is correct
-            } else {
-                callback(false)  // PIN is incorrect
-            }
-        }
-        .addOnFailureListener { e ->
-            // Handle error
-            println("Error validating PIN: ${e.message}")
-            callback(false)
-        }
+    }
 }
