@@ -55,8 +55,7 @@ fun ProfileItem(
                 .fillMaxWidth()
                 .clickable {
                     navController.navigate("todos_page")
-                }
-                .padding(8.dp),
+                },
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
             Box(
@@ -91,12 +90,12 @@ fun ProfileItem(
             content = "Street: ${user.address.street}\nSuite: ${user.address.suite}\nCity: ${user.address.city}\nZipcode: ${user.address.zipcode}",
             linkText = "Show On Map"
         )
+        Spacer(modifier = Modifier.height(16.dp))
         // Sign Out card
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(onClick = onSignOut)
-                .padding(8.dp),
+                .clickable(onClick = onSignOut),
             elevation = CardDefaults.cardElevation(4.dp),
             shape = MaterialTheme.shapes.medium
         ) {

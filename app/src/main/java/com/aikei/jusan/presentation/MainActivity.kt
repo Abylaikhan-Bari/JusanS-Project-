@@ -83,16 +83,12 @@ fun MainAppContent(authViewModel: AuthViewModel = hiltViewModel()) {
                 PinSetupPage(onPinSet = { pin ->
                     authViewModel.savePin(pin)
                     isPinSet = true
-                    snackbarMessage = "PIN set successfully!"
                 })
             } else if (!isPinValidated) {
                 PinPage(onPinEnter = { enteredPin ->
                     authViewModel.validatePin(enteredPin) { isValid ->
                         if (isValid) {
                             isPinValidated = true
-                            snackbarMessage = "PIN validated successfully!"
-                        } else {
-                            snackbarMessage = "Invalid PIN, please try again."
                         }
                     }
                 })
