@@ -11,9 +11,10 @@ import com.aikei.jusan.domain.viewmodel.AuthViewModel
 @Composable
 fun LoginRegisterPage(
     authViewModel: AuthViewModel,  // ViewModel to handle authentication
-    onLoginSuccess: () -> Unit,    // Callback when login succeeds
     isLoginPage: Boolean,          // Boolean to toggle between login and register
-    onRegisterSuccess: () -> Unit  // Callback when registration succeeds
+    onLoginSuccess: () -> Unit,    // Callback when login succeeds
+    onRegisterSuccess: () -> Unit, // Callback when registration succeeds
+    toggleLoginRegister: () -> Unit // Callback to toggle between login and register
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -41,22 +42,22 @@ fun LoginRegisterPage(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Dynamic button for Login or Register
+        // Button changes behavior based on `isLoginPage`
         Button(
             onClick = {
                 if (isLoginPage) {
                     authViewModel.login(email, password)
                     if (authViewModel.isLoginSuccessful) {
-                        onLoginSuccess()  // Navigate to main screen after login success
+                        onLoginSuccess()  // Navigate after login
                     } else {
-                        errorMessage = authViewModel.errorMessage // Show login error
+                        errorMessage = authViewModel.errorMessage
                     }
                 } else {
                     authViewModel.register(email, password)
-                    if (authViewModel.errorMessage.isEmpty()) {
-                        onRegisterSuccess()  // Switch to login page after successful registration
+                    if (authViewModel.isLoginSuccessful) {
+                        onRegisterSuccess()  // Navigate after registration
                     } else {
-                        errorMessage = authViewModel.errorMessage // Show registration error
+                        errorMessage = authViewModel.errorMessage
                     }
                 }
             },
@@ -67,6 +68,16 @@ fun LoginRegisterPage(
 
         if (errorMessage.isNotEmpty()) {
             Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Toggle button to switch between Login and Register page
+        TextButton(onClick = toggleLoginRegister) {
+            Text(
+                if (isLoginPage) "Don't have an account? Register here"
+                else "Already have an account? Login here"
+            )
         }
     }
 }

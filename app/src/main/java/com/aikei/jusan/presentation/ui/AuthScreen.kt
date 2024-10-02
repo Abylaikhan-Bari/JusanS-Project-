@@ -24,9 +24,12 @@ fun AuthScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.SpaceBetween,  // Adjust vertical space
+        horizontalAlignment = Alignment.CenterHorizontally  // Center content horizontally
     ) {
+        // Spacer for flexibility and vertical arrangement
+        Spacer(modifier = Modifier.weight(1f))
+
         // Use one composable for both login and registration
         LoginRegisterPage(
             authViewModel = authViewModel,
@@ -34,17 +37,11 @@ fun AuthScreen(
             isLoginPage = isLoginPage,
             onRegisterSuccess = {
                 isLoginPage = true // Switch to login page after registration success
-            }
+            },
+            toggleLoginRegister = { isLoginPage = !isLoginPage } // Toggle between login and register
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Button to toggle between Login and Register page
-        TextButton(onClick = { isLoginPage = !isLoginPage }) {
-            Text(
-                if (isLoginPage) "Don't have an account? Register here"
-                else "Already have an account? Login here"
-            )
-        }
+        // Spacer to ensure the button stays at the bottom
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
