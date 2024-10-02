@@ -80,6 +80,11 @@ fun PinPage(onPinEnter: (String) -> Unit) {  // Regular callback
                     }
                 }
             }
+            // Trigger the `onPinEnter` callback when the PIN is fully entered
+            if (pin.length == 4) {
+                onPinEnter(pin)
+                pin = "" // Clear after submission
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))

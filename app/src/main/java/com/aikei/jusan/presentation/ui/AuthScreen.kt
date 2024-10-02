@@ -46,7 +46,6 @@ fun AuthScreen(
         verticalArrangement = Arrangement.SpaceBetween,  // Adjust vertical space
         horizontalAlignment = Alignment.CenterHorizontally  // Center content horizontally
     ) {
-        // Spacer for flexibility and vertical arrangement
         Spacer(modifier = Modifier.weight(1f))
 
         // Use one composable for both login and registration

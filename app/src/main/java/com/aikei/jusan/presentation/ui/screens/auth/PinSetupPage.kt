@@ -88,6 +88,11 @@ fun PinSetupPage(onPinSet: (String) -> Unit) {  // onPinSet is now a regular fun
                     }
                 }
             }
+            // Trigger the `onPinSet` callback when the PIN is fully entered
+            if (pin.length == 4) {
+                onPinSet(pin)
+                pin = "" // Clear after setting
+            }
         }
     }
 }
